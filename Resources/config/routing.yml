@@ -1,0 +1,4 @@
+newscoop_newsletter_plugin:
+    resource: "@NewscoopNewsletterPluginBundle/Controller/"
+    type:     annotation
+    prefix:   /

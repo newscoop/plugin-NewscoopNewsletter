@@ -1,0 +1,26 @@
+{
+    "name": "newscoop/newsletter-plugin-bundle",
+    "description": "Newscoop Newsletter Plugin bundle",
+    "keywords": ["newscoop", "newsletter", "mailchimp", "email"],
+    "version": "0.2",
+    "type": "newscoop-plugin",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Rafał Muszyński",
+            "email": "rafal.muszynski@sourcefabric.org"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "newscoop/plugins-installer": ">=v0.2",
+        "ext-curl": "*",
+        "kriswallsmith/buzz": ">=0.7",
+        "mlpz/mailchimp-bundle": "v1.0"
+    },
+    "autoload": {
+        "psr-0": { "Newscoop\\NewsletterPluginBundle\\NewscoopNewsletterPluginBundle": "" }
+    },
+    "target-dir": "Newscoop/NewsletterPluginBundle",
+    "minimum-stability": "dev"
+}

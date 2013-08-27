@@ -1,0 +1,12 @@
+services:
+    newscoop_newsletter_plugin.lifecyclesubscriber:
+        class: Newscoop\NewsletterPluginBundle\EventListener\LifecycleSubscriber
+        arguments:
+            - @em
+        tags:
+            - { name: kernel.event_subscriber}
+
+    newscoop_newsletter_plugin.configure_menu_listener:
+        class: Newscoop\NewsletterPluginBundle\EventListener\ConfigureMenuListener
+        tags:
+          - { name: kernel.event_listener, event: newscoop_newscoop.menu_configure, method: onMenuConfigure }
