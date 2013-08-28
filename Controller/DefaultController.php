@@ -29,16 +29,23 @@ class DefaultController extends Controller
 
         if ($request->get('_route') === 'newscoop_newsletter_plugin_subscribe' && $request->isMethod('POST')) {
             $list_ids = $request->get('lists');
-            try {
-                foreach ($list_ids["ids"] as $value) {
-                   $mailchimp->lists->subscribe($value, array('email' => $currentUser->getEmail()));
+            if ($list_ids) {
+                try {
+                    foreach ($list_ids["ids"] as $value) {
+                       $mailchimp->lists->subscribe($value, array('email' => $currentUser->getEmail()));
+                    }
+                } catch (\Mailchimp_List_AlreadySubscribed $e) {
+                    return $this->container->get('templating')->render('NewscoopNewsletterPluginBundle:Default:widget.html.twig', array(
+                        'lists' => $lists, 
+                        'error' => $e
+                    ));
                 }
-            } catch (\Mailchimp_List_AlreadySubscribed $e) {
-                return $this->container->get('templating')->render('NewscoopNewsletterPluginBundle:Default:widget.html.twig', array(
-                    'lists' => $lists, 
-                    'error' => $e
-                ));
-            }
+            } 
+
+            return $this->container->get('templating')->render('NewscoopNewsletterPluginBundle:Default:widget.html.twig', array(
+                'lists' => $lists, 
+                'error' => true
+            ));
         }
 
         return array(

@@ -23,26 +23,9 @@ class AdminController extends Controller
     public function indexAction(Request $request)
     {
         $test = new \Mailchimp('cfd271519acfa5a27bafe5298e16333e-us7');
-        //$lists = $test->lists->getList();
+
         $lists2 = $test->lists->members('091ccc3c0d', 'subscribed');
-        /*$lists2 = $test->call('lists/clients',array(
-                'id'                => '091ccc3c0d'));*/
-        //var_dump($lists2);die;
-        /*foreach ($lists2 as $key => $value) {
-            var_dump($value);
-        }
-        die;*/
-        //var_dump($lists2['data']);die;
-        /*$result = $test->call('lists/subscribe', array(
-                'id'                => '091ccc3c0d',
-                'email'             => array('email'=>'rmuszynski1@gmail.com'),
-                'merge_vars'        => array('FNAME'=>'Davy', 'LNAME'=>'Jones'),
-                'double_optin'      => false,
-                'update_existing'   => true,
-                'replace_interests' => false,
-                'send_welcome'      => false,
-            ));*/
-       // var_dump($result);die;
+       
         return array('subscribers' => $lists2);
     }
 
