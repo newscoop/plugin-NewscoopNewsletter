@@ -20,8 +20,8 @@ class ConfigureMenuListener
         $menu = $event->getMenu();
 
         $menu[getGS('Plugins')]->addChild(
-        	'Newsletter Plugin', 
-        	array('uri' => $event->getRouter()->generate('newscoop_newsletterplugin_default_admin'))
+        	getGS('Newsletter Plugin'), 
+        	array('uri' => $event->getRouter()->generate('newscoop_newsletterplugin_admin_index'))
         );
     }
 }

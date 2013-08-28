@@ -1,0 +1,35 @@
+<script type="text/javascript">
+
+</script>
+<div class="thumbnail center well well-small text-center">
+    <form action="{{ path('newscoop_newsletter_plugin_subscribe') }}" method="post">
+        
+    <h2>Newsletter</h2>
+
+    <p>Subscribe to our weekly Newsletter and stay tuned.</p>
+    <p>Available lists:</p>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Subscribers</th>
+          <th>Created</th>
+      </tr>
+  </thead>
+  <tbody>
+    {% for list in lists.data %}
+    <tr id="{{ list.id }}">
+        <td><input type="checkbox" name="lists[ids][]" value="{{ list.id }}"></td>
+        <td>{{ list.name }}</td>
+        <td>{{ list.stats.member_count }}</td>
+        <td>{{ list.date_created }}</td>
+    </tr>
+    {% endfor %}
+    
+</tbody>
+</table>
+<br />
+<input type="submit" value="Subscribe Now!" class="btn btn-large" />
+</form>
+</div>

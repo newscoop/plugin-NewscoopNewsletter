@@ -14,7 +14,9 @@
     "require": {
         "php": ">=5.3.3",
         "newscoop/plugins-installer": ">=v0.2",
-        "mailchimp/mailchimp": "dev-master"
+        "ext-curl": "*",
+        "kriswallsmith/buzz": ">=0.7",
+        "mlpz/mailchimp-bundle": "v1.0"
     },
     "autoload": {
         "psr-0": { "Newscoop\\NewsletterPluginBundle\\NewscoopNewsletterPluginBundle": "" }
