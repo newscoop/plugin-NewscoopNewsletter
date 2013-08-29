@@ -22,11 +22,10 @@ class AdminController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $test = new \Mailchimp('cfd271519acfa5a27bafe5298e16333e-us7');
-
-        $lists2 = $test->lists->members('091ccc3c0d', 'subscribed');
+        $mailchimp = new \Mailchimp('cfd271519acfa5a27bafe5298e16333e-us7');
+        $lists = $mailchimp->lists->getList();
        
-        return array('subscribers' => $lists2);
+        return array('lists' => $lists);
     }
 
 }
