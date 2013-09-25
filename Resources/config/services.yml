@@ -9,4 +9,6 @@ services:
     newscoop_newsletter_plugin.configure_menu_listener:
         class: Newscoop\NewsletterPluginBundle\EventListener\ConfigureMenuListener
         tags:
-          - { name: kernel.event_listener, event: newscoop_newscoop.menu_configure, method: onMenuConfigure }
+            - { name: kernel.event_listener, event: newscoop_newscoop.menu_configure, method: onMenuConfigure }
+        arguments: 
+            - @translator
