@@ -3,36 +3,115 @@
 {% block admin_title %}Newsletter Plugin{% endblock %}
 {% block admin_page_title_content %}Newsletter Plugin{% endblock %}
 {% block admin_stylesheets %}
-<link rel="stylesheet" type="text/css" href="{{ Newscoop['WEBSITE_URL'] }}/public/bundles/newscoopnewsletterplugin/css/DT_bootstrap.css">
-<link rel="stylesheet" type="text/css" href="{{ Newscoop['WEBSITE_URL'] }}/public/bundles/newscoopnewsletterplugin/css/bootstrap.min.css">
+<link rel="stylesheet" href="{{ Newscoop['WEBSITE_URL'] }}/bundles/newscoopnewscoop/css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="{{ Newscoop['WEBSITE_URL'] }}/bundles/newscoopnewscoop/css/DT_bootstrap.css">
+<link rel="stylesheet" href="{{ Newscoop['WEBSITE_URL'] }}/bundles/newscoopnewsletterplugin/css/newsletter.css">
 {% endblock %}
 {% block admin_scripts %}
-<script type="text/javascript" src="{{ Newscoop['WEBSITE_URL'] }}/public/bundles/newscoopnewsletterplugin/js/DT_bootstrap.js"></script>
-
+<script type="text/javascript" src="{{ Newscoop['WEBSITE_URL'] }}/bundles/newscoopnewscoop/js/DT_bootstrap.js"></script>
 {% endblock %}
 {% block admin_content %}
-      
-<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="listsTable">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Subscribers</th>
-            <th>Open rate</th>
-            <th>Click rate</th>
-            <th>Created</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for list in lists.data %}
-        <tr>
-            <td>{{ list.name }}</td>
-            <td>{{ list.stats.member_count }}</td>
-            <td>{% if list.stats.open_rate %} {{ list.stats.open_rate }} {% else %} 0.0% {% endif %}</td>
-            <td>{% if list.stats.click_rate %} {{ list.stats.click_rate }} {% else %} 0.0% {% endif %}</td>
-            <td>{{ list.date_created }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+{% for flashMessage in app.session.flashbag.get('error') %}
+<div class="alerts alert-danger alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    {{ flashMessage }}
+</div>
+{% endfor %}
+{% for flashMessage in app.session.flashbag.get('success') %}
+<div class="alerts alert-success alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    {{ flashMessage }}
+</div>
+{% endfor %}
+<div class="plugin-container"> 
+    <ul id="tabsPanel" class="nav nav-tabs nav-justified">
+      <li class="active"><a href="#lists" data-toggle="tab">{{ 'plugin.newsletter.label.lists'|trans }}</a></li>
+      <li><a href="#settings" data-toggle="tab">{{ 'plugin.newsletter.label.settings'|trans }}</a></li>
+      <li><a href="#messages" data-toggle="tab">Messages</a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane fade in active" id="lists" style="margin: 0">
+        <table cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered" id="listsTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Subscribers</th>
+                    <th>Open rate</th>
+                    <th>Click rate</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for list in lists.data %}
+                <tr>
+                    <td>{{ list.name }}</td>
+                    <td>{{ list.stats.member_count }}</td>
+                    <td>{% if list.stats.open_rate %} {{ list.stats.open_rate }} {% else %} 0.0% {% endif %}</td>
+                    <td>{% if list.stats.click_rate %} {{ list.stats.click_rate }} {% else %} 0.0% {% endif %}</td>
+                    <td>{{ list.date_created }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade" id="settings"><br>
+        <form action="{{ path('newscoop_newsletterplugin_admin_configure') }}" method="post" {{ form_enctype(form) }} >
+            <div class="alert alert-info"><center>{{ 'plugin.newsletter.msg.settingsinfo'|trans }}</center></div>
+            <dl>
+                <dt>
+                    <label>{{ 'plugin.newsletter.label.apikey'|trans }}</label>
+                </dt>
+                <dd>
+                    {{ form_widget(form.apiKey, {'attr' : {'class' : 'form-control' }}) }}
+                </dd><br>
+                <dd>
+                    <button type="submit" class="btn btn-success pull-right">Save</button>
+                </dd><br>
+            </dl>
+        </form>
+    </div>
+    <div class="tab-pane fade" id="messages">bbbb</div>
+</div>
+</div>
 
+<script type="text/javascript">
+$(function () {
+    $('#tabsPanel a:last').tab('show')
+})
+$('#listsTable').dataTable({
+    "aoColumns" : [
+    null,
+    null,
+    null,
+    null,
+    null,
+    ],
+    'oLanguage': {
+        'oPaginate': {
+            'sFirst': '{{ 'plugin.newsletter.table.label.first'|trans }}',
+            'sNext': '{{ 'plugin.newsletter.table.label.next'|trans }}',
+            'sPrevious': '{{ 'plugin.newsletter.table.label.previous'|trans }}',
+            'sLast': '{{ 'plugin.newsletter.table.label.last'|trans }}',
+        },
+        'sZeroRecords': '{{ 'plugin.newsletter.table.label.norecords'|trans }}',
+        'sSearch': '',
+        'sInfo': '{{ 'plugin.newsletter.table.info'|trans }}',
+        'sEmpty': '{{ 'plugin.newsletter.table.noentries'|trans }}',
+        'sInfoFiltered': '{{ 'plugin.newsletter.table.filtering'|trans }}',
+        'sLengthMenu': '{{ 'plugin.newsletter.table.menu'|trans }}',
+        'sInfoEmpty': '',
+    },
+    "bAutoWidth": false,
+    "bPaging": true,
+}).fnAdjustColumnSizing();
+
+$('.datatable').each(function(){
+    var datatable = $(this);
+    var search_input = datatable.closest('.dataTables_wrapper').find('div[id$=_filter] input');
+    search_input.attr('placeholder', '{{ 'plugin.newsletter.label.search'|trans }}');
+    search_input.addClass('form-control input-sm');
+    var length_sel = datatable.closest('.dataTables_wrapper').find('div[id$=_length] select');
+    length_sel.addClass('form-control input-sm');
+});
+</script>
 {% endblock %}

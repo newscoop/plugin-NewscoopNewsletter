@@ -11,7 +11,7 @@
  * Newscoop newsletter block
  *
  * Type:     block
- * Name:     newsleter
+ * Name:     newslleter
  * Purpose:  Displays a form to subscribe to newsletter
  *
  * @param string

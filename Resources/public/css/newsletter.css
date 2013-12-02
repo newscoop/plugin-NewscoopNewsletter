@@ -1,0 +1,26 @@
+.col-md-6 {
+    width: 21%;
+}
+
+div.dataTables_filter input {
+    width: 45em;
+}
+
+#settings {
+    margin-left: 0;
+}
+#settingsform_apiKey {
+    width: 400px;
+}
+
+.plugin-container {
+    padding: 10px 10px 30px 10px; 
+    border: 1px solid #ccc; 
+    background-color: #FFF; 
+    font-size: 12px;
+}
+
+#settings dl {
+    margin: 0 auto;
+    width: 400px
+}
