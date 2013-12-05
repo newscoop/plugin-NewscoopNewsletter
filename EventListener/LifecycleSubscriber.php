@@ -44,6 +44,13 @@ class LifecycleSubscriber implements EventSubscriberInterface
     {
         $tool = new \Doctrine\ORM\Tools\SchemaTool($this->em);
         $tool->dropSchema($this->getClasses(), true);
+
+        $removeAPIKey = $this->em->getRepository('Newscoop\NewscoopBundle\Entity\SystemPreferences')->findOneBy(array(
+            'option' => 'mailchimp_apikey'
+        ));
+
+        $this->em->remove($removeAPIKey);
+        $this->em->flush();
     }
 
     public static function getSubscribedEvents()
@@ -57,7 +64,7 @@ class LifecycleSubscriber implements EventSubscriberInterface
 
     private function getClasses(){
         return array(
-          $this->em->getClassMetadata('Newscoop\NewsletterPluginBundle\Entity\Settings'),
+          $this->em->getClassMetadata('Newscoop\NewsletterPluginBundle\Entity\NewsletterList'),
         );
     }
 }

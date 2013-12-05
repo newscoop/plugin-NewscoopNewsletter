@@ -1,7 +1,7 @@
 {% extends 'NewscoopNewscoopBundle::admin_layout.html.twig' %}
 
-{% block admin_title %}Newsletter Plugin{% endblock %}
-{% block admin_page_title_content %}Newsletter Plugin{% endblock %}
+{% block admin_title %}{{ 'plugin.newsletter.label.maintitle'|trans }}{% endblock %}
+{% block admin_page_title_content %}{{ 'plugin.newsletter.label.title'|trans }} - {{ 'plugin.newsletter.label.config'|trans }}{% endblock %}
 {% block admin_stylesheets %}
 <link rel="stylesheet" href="{{ Newscoop['WEBSITE_URL'] }}/bundles/newscoopnewscoop/css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="{{ Newscoop['WEBSITE_URL'] }}/bundles/newscoopnewscoop/css/DT_bootstrap.css">
@@ -11,6 +11,12 @@
 <script type="text/javascript" src="{{ Newscoop['WEBSITE_URL'] }}/bundles/newscoopnewscoop/js/DT_bootstrap.js"></script>
 {% endblock %}
 {% block admin_content %}
+{% if message %}
+<div class="alerts alert-danger alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    {{ message }}
+</div>
+{% endif %}
 {% for flashMessage in app.session.flashbag.get('error') %}
 <div class="alerts alert-danger alert-dismissable">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -25,30 +31,39 @@
 {% endfor %}
 <div class="plugin-container"> 
     <ul id="tabsPanel" class="nav nav-tabs nav-justified">
-      <li class="active"><a href="#lists" data-toggle="tab">{{ 'plugin.newsletter.label.lists'|trans }}</a></li>
+      <li class="active last"><a href="#lists" data-toggle="tab">{{ 'plugin.newsletter.label.lists'|trans }}</a></li>
       <li><a href="#settings" data-toggle="tab">{{ 'plugin.newsletter.label.settings'|trans }}</a></li>
-      <li><a href="#messages" data-toggle="tab">Messages</a></li>
   </ul>
+</ul>
   <div class="tab-content">
     <div class="tab-pane fade in active" id="lists" style="margin: 0">
+        <form action="{{ path('newscoop_newsletterplugin_admin_synchronizealllists') }}" method="post">
+            <button type="submit" id="sync-all-btn" class="btn btn-info btn-sm">{{ 'plugin.newsletter.label.syncall'|trans }}</button>
+        </form>
         <table cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered" id="listsTable">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Subscribers</th>
-                    <th>Open rate</th>
-                    <th>Click rate</th>
-                    <th>Created</th>
+                    <th>{{ 'plugin.newsletter.label.name'|trans }}</th>
+                    <th>{{ 'plugin.newsletter.label.subscribers'|trans }}</th>
+                    <th>{{ 'plugin.newsletter.label.created'|trans }}</th>
+                    <th>{{ 'plugin.newsletter.label.lastsync'|trans }}</th>
+                    <th>{{ 'plugin.newsletter.label.options'|trans }}</th>
                 </tr>
             </thead>
             <tbody>
-                {% for list in lists.data %}
+                {% for list in lists %}
                 <tr>
-                    <td>{{ list.name }}</td>
-                    <td>{{ list.stats.member_count }}</td>
-                    <td>{% if list.stats.open_rate %} {{ list.stats.open_rate }} {% else %} 0.0% {% endif %}</td>
-                    <td>{% if list.stats.click_rate %} {{ list.stats.click_rate }} {% else %} 0.0% {% endif %}</td>
-                    <td>{{ list.date_created }}</td>
+                    <td class="list-name {{ list.listId }}">{{ list.name }}</td>
+                    <td class="list-subscribers {{ list.listId }}">{{ list.subscribersCount }}</td>
+                    <td>{{ list.created_at|date("Y/m/d H:i:s") }}</td>
+                    <td class="list-lastsync {{ list.listId }}">{{ list.lastSynchronized|date("Y/m/d H:i:s") }}</td>
+                    <td>{% if list.isEnabled %}
+                        <button type="button" id="{{ list.listId }}" class="btn btn-danger btn-xs change-status {{ list.listId }} disabled-btn">{{ 'plugin.newsletter.label.disable'|trans }}</button>
+                        {% else %}
+                        <button type="button" id="{{ list.listId }}" class="btn btn-success btn-xs change-status {{ list.listId }} enabled-btn">{{ 'plugin.newsletter.label.enable'|trans }}</button>
+                        {% endif %}
+                        <button type="button" id="{{ list.listId }}" class="btn btn-info btn-xs sync-btn">{{ 'plugin.newsletter.label.sync'|trans }}</button>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -76,15 +91,15 @@
 
 <script type="text/javascript">
 $(function () {
-    $('#tabsPanel a:last').tab('show')
-})
+    $('#tabsPanel a:first').tab('show')
+});
 $('#listsTable').dataTable({
     "aoColumns" : [
     null,
     null,
     null,
     null,
-    null,
+    { sWidth: '20%' },
     ],
     'oLanguage': {
         'oPaginate': {
@@ -112,6 +127,71 @@ $('.datatable').each(function(){
     search_input.addClass('form-control input-sm');
     var length_sel = datatable.closest('.dataTables_wrapper').find('div[id$=_length] select');
     length_sel.addClass('form-control input-sm');
+});
+
+$(document).ready(function() {
+    $('.sync-btn').live('click', function() {
+        var listId = $(this).attr('id');
+        var url = "{{ path('newscoop_newsletterplugin_admin_synchronizelist', {'id': 'text'}) }}";
+        url = url.replace("text", listId);
+        $.post(url,
+            function(msg) {
+                if (msg.status) {
+                    $('.list-subscribers.'+listId).html();
+                    $('.list-name.'+listId).html();
+                    $('.list-lastsync.'+listId).html();
+                    $('.list-subscribers.'+listId).text(msg.subscribers);
+                    $('.list-lastsync.'+listId).text(msg.lastSync.date);
+                    $('.list-name.'+listId).text(msg.listName);
+                    flashMessage('{{ 'plugin.newsletter.msg.syncsuccess'|trans }}');
+                } else {
+                    flashMessage('{{ 'plugin.newsletter.msg.syncerror'|trans }}', 'error');
+                }
+
+                if (msg.sync == false) {
+                    flashMessage('{{ 'plugin.newsletter.msg.syncuptodate'|trans }}');
+                }
+            }
+        );
+    });
+
+    $('.change-status.disabled-btn').live('click', function() {
+        var listId = $(this).attr('id');
+        var url = "{{ path('newscoop_newsletterplugin_admin_disablelist', {'id': 'text'}) }}";
+        url = url.replace("text", listId);
+        $.post(url,
+            function(msg) {
+                if (msg.status) {
+                    $('.change-status.'+listId).html('');
+                    $('.change-status.'+listId).text('{{ 'plugin.newsletter.label.enable'|trans }}');
+                    $('.change-status.'+listId).removeClass('btn-danger disabled-btn');
+                    $('.change-status.'+listId).addClass('btn-success enabled-btn');
+                    flashMessage('{{ 'plugin.newsletter.msg.disabled'|trans }}');
+                } else {
+                    flashMessage('{{ 'plugin.newsletter.msg.statuserror'|trans }}', 'error');
+                }
+            }
+        );
+    });
+
+    $('.change-status.enabled-btn').live('click', function() {
+        var listId = $(this).attr('id');
+        var url = "{{ path('newscoop_newsletterplugin_admin_enablelist', {'id': 'text'}) }}";
+        url = url.replace("text", listId);
+        $.post(url,
+            function(msg) {
+                if (msg.status) {
+                    $('.change-status.'+listId).html('');
+                    $('.change-status.'+listId).text('{{ 'plugin.newsletter.label.disable'|trans }}');
+                    $('.change-status.'+listId).removeClass('btn-success enabled-btn');
+                    $('.change-status.'+listId).addClass('btn-danger disabled-btn');
+                    flashMessage('{{ 'plugin.newsletter.msg.enabled'|trans }}');
+                } else {
+                    flashMessage('{{ 'plugin.newsletter.msg.statuserror'|trans }}', 'error');
+                }
+            }
+        );
+    });
 });
 </script>
 {% endblock %}

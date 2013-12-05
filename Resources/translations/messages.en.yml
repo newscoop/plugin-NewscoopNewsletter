@@ -1,3 +1,4 @@
+Plugins: "Plugins"
 plugin:
   newsletter:
     label:
@@ -5,10 +6,30 @@ plugin:
       search: "Search"
       settings: "Settings"
       apikey: "MailChimp API Key"
+      title: "Newsletter"
+      maintitle: "Newsletter Plugin"
+      config: "configuration"
+      sync: "Synchronize"
+      enable: "Enable"
+      disable: "Disable"
+      name: "Name"
+      subscribers: "Subscribers"
+      created: "Created"
+      options: "Options"
+      lastsync: "Last synchronization"
+      syncall: "Synchronize all lists"
     msg:
       saved: "Successfully saved."
       error: "Could not save your API key."
       settingsinfo: "Add your MailChimp account API Key to make it work!"
+      syncerror: "Could not synchronize selected list."
+      syncallerror: "Cound not synchronize lists, try again later."
+      syncsuccess: "Successfully synchronized."
+      syncuptodate: "Nothing to synchronize. List is up to date."
+      enabled: "List successfully enabled."
+      disabled: "List successfully disabled."
+      statuserror: "Cound not change list status."
+      fillapikey: "Your MailChimp API key is not defined. Please add it in Settings tab!"
     table:
       info: "Showing _START_ to _END_ of _TOTAL_ entries"
       noentries: "No entries to show"

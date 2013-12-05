@@ -24,3 +24,9 @@ div.dataTables_filter input {
     margin: 0 auto;
     width: 400px
 }
+
+#sync-all-btn {
+    margin-top: 35px;
+    margin-bottom: 5px;
+    margin-left: 30px;
+}

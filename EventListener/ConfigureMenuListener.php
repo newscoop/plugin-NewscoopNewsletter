@@ -31,7 +31,7 @@ class ConfigureMenuListener
         $menu = $event->getMenu();
 
         $menu[$this->translator->trans('Plugins')]->addChild(
-        	$this->translator->trans('Newsletter Plugin'), 
+        	$this->translator->trans('plugin.newsletter.label.title'), 
         	array('uri' => $event->getRouter()->generate('newscoop_newsletterplugin_admin_index'))
         );
     }
