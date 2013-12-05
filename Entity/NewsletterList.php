@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping AS ORM;
 /**
  * Newsletter list entity
  *
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Newscoop\NewsletterPluginBundle\Entity\Repository\NewsletterListRepository")
  * @ORM\Table(name="plugin_newsletter_lists")
  */
 class NewsletterList

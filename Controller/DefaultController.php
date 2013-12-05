@@ -25,7 +25,7 @@ class DefaultController extends Controller
     public function widgetAction(Request $request)
     {   
         $preferencesService = $this->container->get('system_preferences_service');
-        $mailchimp = new \Mailchimp("cfd271519acfa5a27bafe5298e16333e-us7");
+        $mailchimp = new \Mailchimp($preferencesService->mailchimp_apikey);
         $lists = $mailchimp->lists->getList();
         
         if ($request->get('_route') === 'newscoop_newsletter_plugin_subscribe') {
