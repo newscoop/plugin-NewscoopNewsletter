@@ -24,7 +24,7 @@ services:
 
     newscoop_newsletter_plugin.service:
         class:      Newscoop\NewsletterPluginBundle\Services\NewsletterListsService
-        arguments:  ["@em"]
+        arguments:  ["@service_container"]
         tags:
             -  { name: kernel.event_listener, event: user.register, method: subscribe }
 

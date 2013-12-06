@@ -12,6 +12,8 @@ use Doctrine\ORM\EntityManager;
 use Newscoop\NewsletterPluginBundle\TemplateList\ListCriteria;
 use Newscoop\NewsletterPluginBundle\Entity\NewsletterList;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 /**
  * Newsletter service
  */
@@ -20,12 +22,19 @@ class NewsletterListsService
     /** @var Doctrine\ORM\EntityManager */
     protected $em;
 
+    /** @var Newscoop\NewscoopBundle\Services\SystemPreferencesService */
+    protected $preferencesService;
+
+    protected $request;
+
     /**
-     * @param Doctrine\ORM\EntityManager $em
+     * @param ContainerInterface $container
      */
-    public function __construct(EntityManager $em)
+    public function __construct(ContainerInterface $container)
     {
-        $this->em = $em;
+        $this->em = $container->get('em');
+        $this->preferencesService = $container->get('system_preferences_service');
+        $this->request = $container->get('request');
     }
 
     /**
@@ -40,10 +49,18 @@ class NewsletterListsService
         $user = array_key_exists('user', $params) ? $params['user'] : null;
         unset($params['user']);
 
-        if ($params['newsletter']) {
-            $preferencesService = $this->container->get('system_preferences_service');
-            $mailchimp = new \Mailchimp($preferencesService->mailchimp_apikey);
-            //TODO subscribe for selected list
+        if ($this->request->has('newsletter-lists')) {
+            $listIds = $this->request->get('newsletter-lists');
+            foreach ($listIds["ids"] as $value) {
+                $this->initMailchimp()->lists->subscribe($value, 
+                    array(
+                        'email' => $user->getEmail()
+                    ), 
+                    array(
+                        'FNAME' => $user->getFirstName(), 'LNAME' => $user->getLastName()
+                    )
+                );
+            }
         }
     }
 
@@ -58,6 +75,26 @@ class NewsletterListsService
         return $this->getRepository()->getListByCriteria($criteria);
     }
 
+    /**
+     * Initialize MailChimp library
+     *
+     * @return Mailchimp
+     */
+    public function initMailchimp()
+    {   
+        return new \Mailchimp($this->preferencesService->mailchimp_apikey);
+    }
+
+    /**
+     * Get mailchimp lists
+     *
+     * @param  array $listId
+     * @return array
+     */
+    public function getMailchimpLists($listId = array())
+    {   
+        return $this->initMailchimp($this->preferencesService->mailchimp_apikey)->lists->getList($listId);
+    }
    
     /**
      * Count by given criteria

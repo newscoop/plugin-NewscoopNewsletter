@@ -70,7 +70,6 @@ class NewsletterList
 
     public function __construct() {
         $this->setIsEnabled(true);
-        $this->setCreatedAt(new \DateTime());
         $this->setIsActive(true);
     }
 

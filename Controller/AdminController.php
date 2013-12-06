@@ -28,6 +28,7 @@ class AdminController extends Controller
     {   
         $translator = $this->container->get('translator');
         $em = $this->container->get('em');
+        $newsletterService = $this->container->get('newscoop_newsletter_plugin.service');
         $preferencesService = $this->container->get('system_preferences_service');
         $message = null;
         $form = $this->container->get('form.factory')->create(new SettingsType(), array(
@@ -43,8 +44,8 @@ class AdminController extends Controller
 
         if ($preferencesService->mailchimp_apikey != null) {
             if ((int)$newsletterListsCount === 0) {
-                $mailchimp = new \Mailchimp($preferencesService->mailchimp_apikey);
-                $lists = $mailchimp->lists->getList();
+                $newsletterService->initMailchimp($preferencesService->mailchimp_apikey);
+                $lists = $newsletterService->getMailchimpLists();
 
                 foreach ($lists as $key => $value) {
                     if (is_array($value)) {
@@ -53,7 +54,8 @@ class AdminController extends Controller
                             $newsletterList->setListId($data['id']);
                             $newsletterList->setName($data['name']);
                             $newsletterList->setSubscribersCount($data['stats']['member_count']);
-                            $newsletterList->setLastSynchronized($newsletterList->getCreatedAt());
+                            $newsletterList->setLastSynchronized(new \DateTime('now'));
+                            $newsletterList->setCreatedAt(new \DateTime($data['date_created']));
                             $em->persist($newsletterList);
                             $em->flush();
                         }
@@ -102,6 +104,7 @@ class AdminController extends Controller
         if ($request->isMethod('POST')) {
             try {
                 $em = $this->container->get('em');
+                $newsletterService = $this->container->get('newscoop_newsletter_plugin.service');
                 $preferencesService = $this->container->get('system_preferences_service');
                 $newsletterList = $em->getRepository('Newscoop\NewsletterPluginBundle\Entity\NewsletterList')->findOneBy(array(
                     'is_active' => true,
@@ -109,8 +112,8 @@ class AdminController extends Controller
                 ));
 
                 if ($newsletterList) {
-                    $mailchimp = new \Mailchimp($preferencesService->mailchimp_apikey);
-                    $lists = $mailchimp->lists->getList(array('list_id' => $id));
+                    $newsletterService->initMailchimp($preferencesService->mailchimp_apikey);
+                    $lists = $newsletterService->getMailchimpLists(array('list_id' => $id));
                     foreach ($lists as $value) {
                         if (is_array($value)) {
                             foreach ($value as $data) {
@@ -150,24 +153,33 @@ class AdminController extends Controller
         try {
             $translator = $this->container->get('translator');
             $em = $this->container->get('em');
+            $newsletterService = $this->container->get('newscoop_newsletter_plugin.service');
             $preferencesService = $this->container->get('system_preferences_service');
-            $newsletterList = $em->getRepository('Newscoop\NewsletterPluginBundle\Entity\NewsletterList')->findOneBy(array(
-                'is_active' => true,
-            ));
+            $newsletterLists = $em->getRepository('Newscoop\NewsletterPluginBundle\Entity\NewsletterList')
+                ->createQueryBuilder('a')
+                ->where('a.is_active = true')
+                ->getQuery()
+                ->getResult();
 
-            if ($newsletterList) {
-                $mailchimp = new \Mailchimp($preferencesService->mailchimp_apikey);
-                $lists = $mailchimp->lists->getList();
+            $newsletterService->initMailchimp($preferencesService->mailchimp_apikey);
+            $lists = $newsletterService->getMailchimpLists();
+
+            if ($lists['total'] == count($newsletterLists)) {
                 foreach ($lists as $value) {
                     if (is_array($value)) {
                         foreach ($value as $data) {
-                            if ($newsletterList->getName() != $data['name'] || 
-                                $newsletterList->getSubscribersCount() != $data['stats']['member_count']) {
-                                $newsletterList->setListId($data['id']);
-                                $newsletterList->setName($data['name']);
-                                $newsletterList->setSubscribersCount($data['stats']['member_count']);
-                                $newsletterList->setLastSynchronized(new \DateTime('now'));
-                                $em->flush();
+                            foreach ($newsletterLists as $key => $list) {
+                                if ($list->getListId() == $data['id']) {
+                                    if ($list->getName() != $data['name'] || 
+                                        $list->getSubscribersCount() != $data['stats']['member_count']) {
+    
+                                        $list->setListId($data['id']);
+                                        $list->setName($data['name']);
+                                        $list->setSubscribersCount($data['stats']['member_count']);
+                                        $list->setLastSynchronized(new \DateTime('now'));
+                                        $em->flush();
+                                    }
+                                }
                             }
                         }
                     }
@@ -177,16 +189,35 @@ class AdminController extends Controller
 
                 return $this->redirect($this->generateUrl('newscoop_newsletterplugin_admin_index'));
             } else {
-                $newsletterList = new NewsletterList();
                 foreach ($lists as $key => $value) {
                     if (is_array($value)) {
                         foreach ($value as $data) {
-                            $newsletterList->setListId($data['id']);
-                            $newsletterList->setName($data['name']);
-                            $newsletterList->setSubscribersCount($data['stats']['member_count']);
-                            $newsletterList->setLastSynchronized($newsletterList->getCreatedAt());
-                            $em->persist($newsletterList);
-                            $em->flush();
+                            foreach ($newsletterLists as $key => $list) {
+                                $oldList = $em->getRepository('Newscoop\NewsletterPluginBundle\Entity\NewsletterList')->findOneBy(array(
+                                    'listId' => $data['id']
+                                ));
+
+                                if ($oldList) {
+                                    if ($oldList->getName() != $data['name'] || 
+                                        $oldList->getSubscribersCount() != $data['stats']['member_count']) {
+    
+                                        $oldList->setListId($data['id']);
+                                        $oldList->setName($data['name']);
+                                        $oldList->setSubscribersCount($data['stats']['member_count']);
+                                        $oldList->setLastSynchronized(new \DateTime('now'));
+                                        $em->flush();
+                                    }
+                                } else {
+                                    $newsletterList = new NewsletterList();
+                                    $newsletterList->setListId($data['id']);
+                                    $newsletterList->setName($data['name']);
+                                    $newsletterList->setSubscribersCount($data['stats']['member_count']);
+                                    $newsletterList->setLastSynchronized(new \DateTime('now'));
+                                    $newsletterList->setCreatedAt(new \DateTime($data['date_created']));
+                                    $em->persist($newsletterList);
+                                    $em->flush();
+                                }
+                            }
                         }
                     }
                 }
