@@ -13,6 +13,7 @@ use Newscoop\NewsletterPluginBundle\TemplateList\ListCriteria;
 use Newscoop\NewsletterPluginBundle\Entity\NewsletterList;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 /**
  * Newsletter service
@@ -25,7 +26,11 @@ class NewsletterListsService
     /** @var Newscoop\NewscoopBundle\Services\SystemPreferencesService */
     protected $preferencesService;
 
+    /** @var Symfony\Component\HttpFoundation\Request */
     protected $request;
+
+    /** @var Newscoop\Entity\User */
+    protected $user;
 
     /**
      * @param ContainerInterface $container
@@ -35,6 +40,7 @@ class NewsletterListsService
         $this->em = $container->get('em');
         $this->preferencesService = $container->get('system_preferences_service');
         $this->request = $container->get('request');
+        $this->user = $container->get('user');
     }
 
     /**
@@ -52,15 +58,75 @@ class NewsletterListsService
         if ($this->request->has('newsletter-lists')) {
             $listIds = $this->request->get('newsletter-lists');
             foreach ($listIds["ids"] as $value) {
-                $this->initMailchimp()->lists->subscribe($value, 
-                    array(
-                        'email' => $user->getEmail()
-                    ), 
-                    array(
-                        'FNAME' => $user->getFirstName(), 'LNAME' => $user->getLastName()
-                    )
-                );
+                if (count($listIds["ids"]) != 1) {
+                    foreach ($listIds["ids"] as $value) {
+                        $this->subscribeUser($value);
+                    }
+                } else {
+                    $this->subscribeUser($listIds["ids"]);
+                }
             }
+        }
+    }
+
+    /**
+     * Subscribe user on kernel request
+     *
+     * @param  GetResponseEvent $event
+     * @return void
+     */
+    public function onKernelRequest(GetResponseEvent $event)
+    {   
+        if ($event->getRequest()->request->has('newsletter-lists')) {
+            $listIds = $event->getRequest()->request->get('newsletter-lists');
+            $username = $event->getRequest()->request->get('username');
+            if (count($listIds["ids"]) != 1) {
+                foreach ($listIds["ids"] as $value) {
+                    $this->subscribeUser($value);
+                }
+            } else {
+                $this->subscribeUser($listIds["ids"]);
+            }
+        }
+
+        if ($event->getRequest()->request->has('newsletter-lists-public')) {
+            $listIds = $event->getRequest()->request->get('newsletter-lists-public');
+            foreach ($listIds["ids"] as $value) {
+                try {
+                    $this->initMailchimp()->lists->subscribe($value, 
+                        array(
+                            'email' => $event->getRequest()->request->get('newsletter-lists-public-email')
+                        ),
+                        array(
+                            'FNAME' => $event->getRequest()->request->get('newsletter-lists-public-firstname'), 
+                            'LNAME' => $event->getRequest()->request->get('newsletter-lists-public-lastname')
+                        )
+                    );
+                } catch (\Exception $e) {
+
+                }
+            }
+        }
+    }
+
+    /**
+     * Subscribe user to give list id
+     *
+     * @param  string $id
+     * @return void
+     */
+    public function subscribeUser($id) {
+        try {
+            $this->initMailchimp()->lists->subscribe($id, 
+                array(
+                    'email' => $this->user->getCurrentUser()->getEmail()
+                ), 
+                array(
+                    'FNAME' => $this->user->getCurrentUser()->getFirstName(), 
+                    'LNAME' => $this->user->getCurrentUser()->getLastName()
+                )
+            );
+        } catch (\Exception $e) {
         }
     }
 
