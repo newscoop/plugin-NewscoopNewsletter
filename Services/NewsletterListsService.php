@@ -79,7 +79,6 @@ class NewsletterListsService
     {   
         if ($event->getRequest()->request->has('newsletter-lists')) {
             $listIds = $event->getRequest()->request->get('newsletter-lists');
-            $username = $event->getRequest()->request->get('username');
             if (count($listIds["ids"]) != 1) {
                 foreach ($listIds["ids"] as $value) {
                     $this->subscribeUser($value);
@@ -110,7 +109,7 @@ class NewsletterListsService
     }
 
     /**
-     * Subscribe user to give list id
+     * Subscribe user to given list id
      *
      * @param  string $id
      * @return void

@@ -1,6 +1,6 @@
 {% extends 'NewscoopNewscoopBundle::admin_layout.html.twig' %}
 
-{% block admin_title %}{{ 'plugin.newsletter.label.maintitle'|trans }}{% endblock %}
+{% block admin_title %} {{ parent() }} - {{ 'plugin.newsletter.label.maintitle'|trans }}{% endblock %}
 {% block admin_page_title_content %}{{ 'plugin.newsletter.label.title'|trans }} - {{ 'plugin.newsletter.label.config'|trans }}{% endblock %}
 {% block admin_stylesheets %}
 <link rel="stylesheet" href="{{ Newscoop['WEBSITE_URL'] }}/bundles/newscoopnewscoop/css/bootstrap.css">
@@ -85,7 +85,6 @@
             </dl>
         </form>
     </div>
-    <div class="tab-pane fade" id="messages">bbbb</div>
 </div>
 </div>
 
@@ -94,6 +93,9 @@ $(function () {
     $('#tabsPanel a:first').tab('show')
 });
 $('#listsTable').dataTable({
+    "aoColumnDefs": [
+        { 'bSortable': false, 'aTargets': [ 4 ] }
+    ],
     "aoColumns" : [
     null,
     null,
