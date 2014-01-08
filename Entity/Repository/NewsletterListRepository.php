@@ -30,6 +30,10 @@ class NewsletterListRepository extends EntityRepository
             ->setParameter('is_active', true);
 
         foreach ($criteria->perametersOperators as $key => $operator) {
+            if ($criteria->$key == "true" || $criteria->$key == "false") {
+                $criteria->$key = (bool) $criteria->$key;
+            }
+
             $qb->andWhere('nl.'.$key.' = :'.$key)
                 ->setParameter($key, $criteria->$key);
         }
@@ -38,10 +42,10 @@ class NewsletterListRepository extends EntityRepository
         $countBuilder = clone $qb;
         $list->count = (int) $countBuilder->select('COUNT(nl)')->getQuery()->getSingleScalarResult();
 
-        if($criteria->length != 0) {
+        if ($criteria->length != 0) {
             $qb->setMaxResults($criteria->length);
         }
-        
+
         $metadata = $this->getClassMetadata();
         foreach ($criteria->orderBy as $key => $order) {
             if (array_key_exists($key, $metadata->columnNames)) {
