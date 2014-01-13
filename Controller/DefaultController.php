@@ -2,7 +2,7 @@
 /**
  * @package Newscoop\NewsletterPluginBundle
  * @author Rafał Muszyński <rafal.muszynski@sourcefabric.org>
- * @copyright 2013 Sourcefabric o.p.s.
+ * @copyright 2014 Sourcefabric o.p.s.
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -12,59 +12,72 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
+/**
+* Newsletter controller
+*/
 class DefaultController extends Controller
 {
 
     /**
-     * @Route("/newsletter-plugin/widget", name="newscoop_newsletter_plugin_widget")
      * @Route("/newsletter-plugin/subscribe", name="newscoop_newsletter_plugin_subscribe")
-     * @Template()
      */
-    public function widgetAction(Request $request)
-    {   
-        $preferencesService = $this->container->get('system_preferences_service');
-        $mailchimp = new \Mailchimp($preferencesService->mailchimp_apikey);
-        $lists = $mailchimp->lists->getList();
-        
-        if ($request->get('_route') === 'newscoop_newsletter_plugin_subscribe') {
-
-            $currentUser = $this->get('user')->getCurrentUser();
-            $lists = $mailchimp->lists->getList();
-            $list_ids = $request->get('lists');
-           
-            if ($list_ids) {
-                try {
-
-                    foreach ($list_ids["ids"] as $value) {
-                        $mailchimp->lists->subscribe($value, 
-                            array(
-                                'email' => $currentUser->getEmail()
-                            ), 
-                            array(
-                                'FNAME' => $currentUser->getFirstName(), 'LNAME' => $currentUser->getLastName()
-                            )
-                        );
+    public function subscribeAction(Request $request)
+    {
+        if ($request->isMethod('POST')) {
+            $newsletterService = $this->container->get('newscoop_newsletter_plugin.service');
+            $translator = $this->container->get('translator');
+            if ($request->request->has('newsletter-lists')) {
+                $listIds = $request->request->get('newsletter-lists');
+                $type = $request->request->get('newsletter-type');
+                if (count($listIds["ids"]) != 1) {
+                    foreach ($listIds["ids"] as $value) {
+                        $newsletterService->subscribeUser($value, $type);
                     }
 
-                } catch (\Mailchimp_List_AlreadySubscribed $e) {
-                    
-                    return new Response(json_encode(array(
-                        'error' => substr($e->getMessage(), 0, -35),
-                        'status' => false
-                    )));
+                    return new JsonResponse(array(
+                        'message' => $translator->trans('plugin.newsletter.msg.successfully'),
+                        'status' => true,
+                    ));
+                } else {
+                    return new JsonResponse($newsletterService->subscribeUser($listIds["ids"], $type));
                 }
-
-                return new Response(json_encode(array('status' => true)));
             }
 
-            return new Response(json_encode(array('error' => false)));
+            return new JsonResponse(array(
+                'message' => $translator->trans('plugin.newsletter.msg.selectone'),
+                'status' => false
+            ));
         }
-
-        return array(
-            'lists' => $lists,
-        );
     }
+    /**
+     * @Route("/newsletter-plugin/subscribe-public", name="newscoop_newsletter_plugin_subscribepublic")
+     */
+    public function subscribePublicAction(Request $request)
+    {
+        if ($request->isMethod('POST')) {
+            $newsletterService = $this->container->get('newscoop_newsletter_plugin.service');
+            if ($request->request->has('newsletter-lists-public')) {
+                $listIds = $request->request->get('newsletter-lists-public');
+                if (count($listIds["ids"]) != 1) {
+                    foreach ($listIds["ids"] as $value) {
+                        $newsletterService->subscribePublic($value, $type);
+                    }
 
+                    return new JsonResponse(array(
+                        'message' => $translator->trans('plugin.newsletter.msg.successfully'),
+                        'status' => true,
+                    ));
+                } else {
+                    return new JsonResponse($this->subscribePublic($listIds["ids"], $type));
+                }
+            }
+
+            return new JsonResponse(array(
+                'message' => $translator->trans('plugin.newsletter.msg.selectone'),
+                'status' => false
+            ));
+        }
+    }
 }

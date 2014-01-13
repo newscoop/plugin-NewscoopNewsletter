@@ -14,6 +14,7 @@ use Newscoop\NewsletterPluginBundle\Entity\NewsletterList;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Newsletter service
@@ -32,6 +33,9 @@ class NewsletterListsService
     /** @var Newscoop\Entity\User */
     protected $user;
 
+    /** @var Symfony\Component\Translation\Translator */
+    protected $translator;
+
     /**
      * @param ContainerInterface $container
      */
@@ -41,6 +45,7 @@ class NewsletterListsService
         $this->preferencesService = $container->get('system_preferences_service');
         $this->request = $container->get('request');
         $this->user = $container->get('user');
+        $this->translator = $container->get('translator');
     }
 
     /**
@@ -49,7 +54,7 @@ class NewsletterListsService
      * @param  GenericEvent $event
      * @return void
      */
-    public function subscribe(GenericEvent $event)
+    public function subscribeOnRegister(GenericEvent $event)
     {
         $params = $event->getArguments();
         $user = array_key_exists('user', $params) ? $params['user'] : null;
@@ -70,69 +75,76 @@ class NewsletterListsService
     }
 
     /**
-     * Subscribe user on kernel request
+     * Subscribe not registered user to given list id
      *
-     * @param  GetResponseEvent $event
+     * @param string $id   Newsletter list id
+     * @param string $type Newsletter type Html or text
+     *
      * @return void
      */
-    public function onKernelRequest(GetResponseEvent $event)
-    {   
-        if ($event->getRequest()->request->has('newsletter-lists')) {
-            $listIds = $event->getRequest()->request->get('newsletter-lists');
-            if (count($listIds["ids"]) != 1) {
-                foreach ($listIds["ids"] as $value) {
-                    $this->subscribeUser($value);
-                }
-            } else {
-                $this->subscribeUser($listIds["ids"]);
-            }
+    public function subscribePublic($id, $type)
+    {
+        try {
+            $this->initMailchimp()->lists->subscribe($value,
+                array(
+                    'email' => $request->request->get('newsletter-lists-public-email')
+                ),
+                array(
+                    'FNAME' => $request->request->get('newsletter-lists-public-firstname'),
+                    'LNAME' => $request->request->get('newsletter-lists-public-lastname')
+                ),
+                $type
+            );
+        } catch (\Mailchimp_List_AlreadySubscribed $e) {
+            return array(
+                'message' => substr($e->getMessage(), 0, -35),
+                'status' => false,
+            );
         }
 
-        if ($event->getRequest()->request->has('newsletter-lists-public')) {
-            $listIds = $event->getRequest()->request->get('newsletter-lists-public');
-            foreach ($listIds["ids"] as $value) {
-                try {
-                    $this->initMailchimp()->lists->subscribe($value, 
-                        array(
-                            'email' => $event->getRequest()->request->get('newsletter-lists-public-email')
-                        ),
-                        array(
-                            'FNAME' => $event->getRequest()->request->get('newsletter-lists-public-firstname'), 
-                            'LNAME' => $event->getRequest()->request->get('newsletter-lists-public-lastname')
-                        )
-                    );
-                } catch (\Exception $e) {
-
-                }
-            }
-        }
+        return array(
+            'message' => $this->translator->trans('plugin.newsletter.msg.successfully'),
+            'status' => true,
+        );
     }
 
     /**
      * Subscribe user to given list id
      *
-     * @param  string $id
+     * @param string $id   Newsletter list id
+     * @param string $type Newsletter type Html or text
+     *
      * @return void
      */
-    public function subscribeUser($id) {
+    public function subscribeUser($id, $type) {
         try {
-            $this->initMailchimp()->lists->subscribe($id, 
+            $this->initMailchimp()->lists->subscribe($id,
                 array(
                     'email' => $this->user->getCurrentUser()->getEmail()
-                ), 
+                ),
                 array(
-                    'FNAME' => $this->user->getCurrentUser()->getFirstName(), 
+                    'FNAME' => $this->user->getCurrentUser()->getFirstName(),
                     'LNAME' => $this->user->getCurrentUser()->getLastName()
-                )
+                ),
+                $type
             );
-        } catch (\Exception $e) {
+        } catch (\Mailchimp_List_AlreadySubscribed $e) {
+            return array(
+                'message' => substr($e->getMessage(), 0, -35),
+                'status' => false,
+            );
         }
+
+        return array(
+            'message' => $this->translator->trans('plugin.newsletter.msg.successfully'),
+            'status' => true,
+        );
     }
 
     /**
      * Find by criteria
      *
-     * @param  ListCriteria        $criteria
+     * @param ListCriteria         $criteria
      * @return Newscoop\ListResult
      */
     public function findByCriteria(ListCriteria $criteria)
@@ -146,21 +158,21 @@ class NewsletterListsService
      * @return Mailchimp
      */
     public function initMailchimp()
-    {   
+    {
         return new \Mailchimp($this->preferencesService->mailchimp_apikey);
     }
 
     /**
      * Get mailchimp lists
      *
-     * @param  array $listId
+     * @param array $listId
      * @return array
      */
     public function getMailchimpLists($listId = array())
-    {   
+    {
         return $this->initMailchimp($this->preferencesService->mailchimp_apikey)->lists->getList($listId);
     }
-   
+
     /**
      * Count by given criteria
      *
