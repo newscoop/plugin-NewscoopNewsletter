@@ -25,7 +25,7 @@ class AdminController extends Controller
      * @Template()
      */
     public function indexAction(Request $request)
-    {   
+    {
         $translator = $this->container->get('translator');
         $em = $this->container->get('em');
         $newsletterService = $this->container->get('newscoop_newsletter_plugin.service');
@@ -88,7 +88,7 @@ class AdminController extends Controller
             ->where('a.is_active = true')
             ->getQuery()
             ->getArrayResult();
-      
+
         return array(
             'form' => $form->createView(),
             'lists' => $newsletterLists,
@@ -100,7 +100,7 @@ class AdminController extends Controller
      * @Route("/admin/newsletter-plugin/synchronize-list/{id}")
      */
     public function synchronizeListAction(Request $request, $id)
-    {   
+    {
         if ($request->isMethod('POST')) {
             try {
                 $em = $this->container->get('em');
@@ -170,9 +170,9 @@ class AdminController extends Controller
                         foreach ($value as $data) {
                             foreach ($newsletterLists as $key => $list) {
                                 if ($list->getListId() == $data['id']) {
-                                    if ($list->getName() != $data['name'] || 
+                                    if ($list->getName() != $data['name'] ||
                                         $list->getSubscribersCount() != $data['stats']['member_count']) {
-    
+
                                         $list->setListId($data['id']);
                                         $list->setName($data['name']);
                                         $list->setSubscribersCount($data['stats']['member_count']);
@@ -198,9 +198,9 @@ class AdminController extends Controller
                                 ));
 
                                 if ($oldList) {
-                                    if ($oldList->getName() != $data['name'] || 
+                                    if ($oldList->getName() != $data['name'] ||
                                         $oldList->getSubscribersCount() != $data['stats']['member_count']) {
-    
+
                                         $oldList->setListId($data['id']);
                                         $oldList->setName($data['name']);
                                         $oldList->setSubscribersCount($data['stats']['member_count']);
@@ -228,7 +228,7 @@ class AdminController extends Controller
             }
         } catch (\Exception $e) {
             $this->get('session')->getFlashBag()->add('error', $translator->trans('plugin.newsletter.msg.syncallerror'));
-        
+
             return $this->redirect($this->generateUrl('newscoop_newsletterplugin_admin_index'));
         }
     }
@@ -238,7 +238,7 @@ class AdminController extends Controller
      * @Route("/admin/newsletter-plugin/enable-list/{id}", name="newscoop_newsletterplugin_admin_enablelist")
      */
     public function disableListAction(Request $request, $id)
-    {   
+    {
         if ($request->isMethod('POST')) {
             $em = $this->container->get('em');
             $newsletterList = $em->getRepository('Newscoop\NewsletterPluginBundle\Entity\NewsletterList')->findOneBy(array(

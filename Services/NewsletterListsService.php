@@ -15,6 +15,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Newscoop\NewsletterPluginBundle\Entity\SubscribedUser;
 
 /**
  * Newsletter service
@@ -51,7 +52,8 @@ class NewsletterListsService
     /**
      * Subscribe for newsletter list
      *
-     * @param  GenericEvent $event
+     * @param GenericEvent $event
+     *
      * @return void
      */
     public function subscribeOnRegister(GenericEvent $event)
@@ -65,7 +67,7 @@ class NewsletterListsService
             foreach ($listIds["ids"] as $value) {
                 if (count($listIds["ids"]) != 1) {
                     foreach ($listIds["ids"] as $value) {
-                        $this->subscribeUser($value);
+                        $this->subscribeUser($value, 'html');
                     }
                 } else {
                     $this->subscribeUser($listIds["ids"]);
@@ -116,7 +118,8 @@ class NewsletterListsService
      *
      * @return void
      */
-    public function subscribeUser($id, $type) {
+    public function subscribeUser($id, $type)
+    {
         try {
             $this->initMailchimp()->lists->subscribe($id,
                 array(
@@ -142,9 +145,62 @@ class NewsletterListsService
     }
 
     /**
+     * Test if user email is subscribed to list
+     *
+     * @param string $email  User email
+     * @param string $listId List id
+     *
+     * @return bool
+     */
+    public function isSubscribed($email, $listId)
+    {
+        try {
+            return in_array($listId, $this->getLists(array('email' => $email))[0]);
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Unsubscribe email from list
+     *
+     * @param string $email  User email
+     * @param string $listId List id
+     *
+     * @return void|Exception
+     */
+    public function unsubscribe($email, $listId)
+    {
+        try {
+            return $this->initMailchimp()->lists->unsubscribe($listId, array('email' => $email));
+        } catch (\Exception $e) {
+            return new JsonResponse(array(
+                'message' => $e->getMessage(),
+                'status' => false,
+                'listId' => $listId
+            ));
+        }
+    }
+
+    /**
+     * Get lists email is subscribed to
+     *
+     * @param string $email User email
+     *
+     * @return array
+     */
+    private function getLists($email)
+    {
+        $lists = $this->initMailchimp()->helper->listsForEmail($email);
+
+        return $lists ?: array();
+    }
+
+    /**
      * Find by criteria
      *
      * @param ListCriteria         $criteria
+     *
      * @return Newscoop\ListResult
      */
     public function findByCriteria(ListCriteria $criteria)

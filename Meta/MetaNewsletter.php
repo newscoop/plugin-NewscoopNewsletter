@@ -16,35 +16,40 @@ use Newscoop\NewsletterPluginBundle\Entity\NewsletterList;
  */
 class MetaNewsletter
 {
-    /** 
+    /**
      * @var NewsletterList
      */
     private $list;
 
-    /** 
+    /**
      * @var string
      */
     public $id;
 
-    /** 
+    /**
      * @var boolean
      */
     public $enabled;
 
-    /** 
+    /**
      * @var string
      */
     public $name;
 
-    /** 
+    /**
      * @var int
      */
     public $subscribers_count;
 
-    /** 
+    /**
      * @var string
      */
     public $created;
+
+    /**
+     * @var Newscoop\NewsletterBundle\Services\NewsletterService
+     */
+    private $service;
 
     /**
      * @param NewsletterList $list
@@ -55,6 +60,8 @@ class MetaNewsletter
             return;
         }
 
+        //$this->service = $this->container->get('newscoop_newsletter_plugin.service');
+        $this->service = \Zend_Registry::get('container')->getService('newscoop_newsletter_plugin.service');
         $this->created = $this->getCreated($list);
         $this->enabled = $this->getEnabled($list);
         $this->name = $this->getName($list);
@@ -71,8 +78,21 @@ class MetaNewsletter
      * @return string
      */
     protected function getListId($list)
-    {  
+    {
         return $list->getListId() ? $list->getListId() : null;
+    }
+
+    /**
+     * Chceck is user email is subscribed to list
+     *
+     * @param string $email  User email
+     * @param string $listId List id
+     *
+     * @return bool
+     */
+    public function isSubscribed($email, $listId)
+    {
+        return $this->service->isSubscribed($email, $listId);
     }
 
     /**
@@ -83,7 +103,7 @@ class MetaNewsletter
      * @return int
      */
     protected function getSubscribers($list)
-    {  
+    {
         return $list->getSubscribersCount() ? $list->getSubscribersCount() : 0;
     }
 
@@ -95,7 +115,7 @@ class MetaNewsletter
      * @return string
      */
     protected function getName($list)
-    {  
+    {
         return $list->getName() ? $list->getName() : null;
     }
 

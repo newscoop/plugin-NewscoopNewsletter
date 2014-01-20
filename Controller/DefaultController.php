@@ -80,4 +80,21 @@ class DefaultController extends Controller
             ));
         }
     }
+
+    /**
+     * @Route("/newsletter-plugin/unsubscribe", name="newscoop_newsletter_plugin_unsubscribe")
+     */
+    public function unsubscribeAction(Request $request)
+    {
+        if ($request->isMethod('POST')) {
+            $user = $this->container->get('user')->getCurrentUser();
+            if ($user) {
+                $newsletterService = $this->container->get('newscoop_newsletter_plugin.service');
+                $email = $request->request->get('email');
+                $listId = $request->request->get('listId');
+
+                return $newsletterService->unsubscribe($email, $listId);
+            }
+        }
+    }
 }
