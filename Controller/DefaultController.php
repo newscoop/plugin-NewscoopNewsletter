@@ -33,28 +33,24 @@ class DefaultController extends Controller
                 $translator = $this->container->get('translator');
                 $type = $request->request->get('newsletter-type');
                 $messages = array();
-                if (!$lists) {
-                    foreach ($lists as $listId => $status) {
-                        try {
-                            $matches = $newsletterService->getLists(array('email' => $user->getEmail()));
-                        }catch(\Exception $e) {
-                            $matches = array();
-                        }
+                foreach ($lists as $listId => $status) {
+                    try {
+                        $matches = $newsletterService->getLists(array('email' => $user->getEmail()));
+                    }catch(\Exception $e) {
+                        $matches = array();
+                    }
 
-                        if ($status === 'false' && !empty($matches)) {
-                            foreach ($matches as $match) {
-                                if ($match['id'] == $listId) {
-                                    $newsletterService->unsubscribe($user->getEmail(), $match['id']);
-                                    $messages[] = array('message' => $translator->trans('plugin.newsletter.msg.unsubscribe', array('%list%' => $match['name'])));
-                                }
+                    if ($status === 'false' && !empty($matches)) {
+                        foreach ($matches as $match) {
+                            if ($match['id'] == $listId) {
+                                $newsletterService->unsubscribe($user->getEmail(), $match['id']);
+                                $messages[] = array('message' => $translator->trans('plugin.newsletter.msg.unsubscribe', array('%list%' => $match['name'])));
                             }
-                        } else if ($status === 'true' && empty($matches)) {
-                            $messages['message'] = $newsletterService->subscribeUser($listId, $type);
                         }
+                    } else if ($status === 'true' && empty($matches)) {
+                        $messages['message'] = $newsletterService->subscribeUser($listId, $type);
                     }
                 }
-
-                $messages['message'] = $translator->trans('plugin.newsletter.msg.selectone');
             }
 
             return new JsonResponse($messages);
