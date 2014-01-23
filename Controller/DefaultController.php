@@ -47,8 +47,12 @@ class DefaultController extends Controller
                                 $messages[] = array('message' => $translator->trans('plugin.newsletter.msg.unsubscribe', array('%list%' => $match['name'])));
                             }
                         }
-                    } else if ($status === 'true' && empty($matches)) {
-                        $messages['message'] = $newsletterService->subscribeUser($listId, $type);
+                    } else if ($status === 'true' && !empty($matches)) {
+                        foreach ($matches as $match) {
+                            if ($match['id'] != $listId) {
+                                $messages['message'] = $newsletterService->subscribeUser($listId, $type);
+                            }
+                        }
                     }
                 }
             }
