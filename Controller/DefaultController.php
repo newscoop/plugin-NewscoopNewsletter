@@ -28,11 +28,11 @@ class DefaultController extends Controller
         if ($request->isMethod('POST')) {
             $newsletterService = $this->container->get('newscoop_newsletter_plugin.service');
             $user = $this->container->get('user')->getCurrentUser();
+            $messages = array();
             if ($request->request->has('newsletter-list')) {
                 $lists = $request->request->get('newsletter-list');
                 $translator = $this->container->get('translator');
                 $type = $request->request->get('newsletter-type');
-                $messages = array();
                 foreach ($lists as $listId => $status) {
                     try {
                         $matches = $newsletterService->getLists(array('email' => $user->getEmail()));
