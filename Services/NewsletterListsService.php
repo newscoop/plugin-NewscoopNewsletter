@@ -2,7 +2,7 @@
 /**
  * @package Newscoop\NewsletterPluginBundle
  * @author Rafał Muszyński <rafal.muszynski@sourcefabric.org>
- * @copyright 2013 Sourcefabric o.p.s.
+ * @copyright 2014 Sourcefabric o.p.s.
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
@@ -14,7 +14,6 @@ use Newscoop\NewsletterPluginBundle\Entity\NewsletterList;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Newscoop\NewsletterPluginBundle\Entity\SubscribedUser;
 
 /**
