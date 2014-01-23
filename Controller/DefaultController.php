@@ -53,6 +53,8 @@ class DefaultController extends Controller
                                 $messages['message'] = $newsletterService->subscribeUser($listId, $type);
                             }
                         }
+                    } else if ($status === 'true' && empty($matches)) {
+                        $messages['message'] = $newsletterService->subscribeUser($listId, $type);
                     }
                 }
             }
