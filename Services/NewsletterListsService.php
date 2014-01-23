@@ -135,16 +135,8 @@ class NewsletterListsService
             $messageArray = explode('.', $e->getMessage());
             unset($messageArray[count($messageArray)-2]);
 
-            return array(
-                'message' => implode('.', $messageArray),
-                'status' => false,
-            );
+            throw new \Exception(implode('.', $messageArray));
         }
-
-        return array(
-            'message' => $this->translator->trans('plugin.newsletter.msg.successfully'),
-            'status' => true,
-        );
     }
 
     /**
@@ -185,13 +177,9 @@ class NewsletterListsService
     public function unsubscribe($email, $listId)
     {
         try {
-            return $this->initMailchimp()->lists->unsubscribe($listId, array('email' => $email));
+            $this->initMailchimp()->lists->unsubscribe($listId, array('email' => $email));
         } catch (\Exception $e) {
-            return new JsonResponse(array(
-                'message' => $e->getMessage(),
-                'status' => false,
-                'listId' => $listId
-            ));
+            throw new Exception($e->getMessage());
         }
     }
 

@@ -26,40 +26,81 @@ class DefaultController extends Controller
     public function subscribeAction(Request $request)
     {
         if ($request->isMethod('POST')) {
-            $newsletterService = $this->container->get('newscoop_newsletter_plugin.service');
-            $user = $this->container->get('user')->getCurrentUser();
-            $messages = array();
-            if ($request->request->has('newsletter-list')) {
-                $lists = $request->request->get('newsletter-list');
+            try {
+                $newsletterService = $this->container->get('newscoop_newsletter_plugin.service');
+                $user = $this->container->get('user')->getCurrentUser();
                 $translator = $this->container->get('translator');
-                $type = $request->request->get('newsletter-type');
-                foreach ($lists as $listId => $status) {
-                    try {
-                        $matches = $newsletterService->getLists(array('email' => $user->getEmail()));
-                    }catch(\Exception $e) {
-                        $matches = array();
-                    }
+                $messages = array();
+                if ($request->request->has('newsletter-list')) {
+                    $lists = $request->request->get('newsletter-list');
+                    $listNames = $request->request->get('newsletter-names');
+                    $type = $request->request->get('newsletter-type');
+                    foreach ($lists as $listId => $status) {
+                        try {
+                            $matches = $newsletterService->getLists(array('email' => $user->getEmail()));
+                        } catch(\Exception $e) {
+                            $matches = array();
+                        }
 
-                    if ($status === 'false' && !empty($matches)) {
-                        foreach ($matches as $match) {
-                            if ($match['id'] == $listId) {
-                                $newsletterService->unsubscribe($user->getEmail(), $match['id']);
-                                $messages[] = array('message' => $translator->trans('plugin.newsletter.msg.unsubscribe', array('%list%' => $match['name'])));
+                        if ($status === 'false' && !empty($matches) && $newsletterService->isSubscribed($user->getEmail(), $listId)) {
+                            foreach ($matches as $match) {
+                                if ($match['id'] == $listId) {
+                                    try {
+
+                                        $newsletterService->unsubscribe($user->getEmail(), $match['id']);
+                                        $messages[] = array(
+                                            'message' => $translator->trans('plugin.newsletter.msg.unsubscribe', array('%list%' => $match['name'])),
+                                            'status' => true,
+                                        );
+                                    } catch(\Exception $e) {
+                                        $messages[] = array(
+                                            'message' => $translator->trans('plugin.newsletter.msg.errorunsubscribe', array('%list%' => $match['name'])),
+                                            'status' => false,
+                                        );
+                                    }
+                                }
+                            }
+                        } else if ($status === 'true' && !empty($matches) && !$newsletterService->isSubscribed($user->getEmail(), $listId)) {
+                            foreach ($matches as $match) {
+                                if ($match['id'] != $listId) {
+                                    try {
+                                        $newsletterService->subscribeUser($listId, $type);
+                                        $messages[] = array(
+                                            'message' => $translator->trans('plugin.newsletter.msg.successfully', array('%list%' => $listNames[$listId])),
+                                            'status' => true,
+                                        );
+                                    } catch(\Exception $e) {
+                                        $messages[] = array(
+                                            'message' => $translator->trans('plugin.newsletter.msg.unsuccessfully', array('%list%' => $listNames[$listId])),
+                                            'status' => false,
+                                        );
+                                    }
+                                }
+                            }
+                        } else if ($status === 'true' && empty($matches)) {
+                            try {
+                                $newsletterService->subscribeUser($listId, $type);
+                                $messages[] = array(
+                                    'message' => $translator->trans('plugin.newsletter.msg.successfully', array('%list%' => $listNames[$listId])),
+                                    'status' => true,
+                                );
+                            } catch(\Exception $e) {
+                                $messages[] = array(
+                                    'message' => $translator->trans('plugin.newsletter.msg.unsuccessfully', array('%list%' => $listNames[$listId])),
+                                    'status' => false,
+                                );
                             }
                         }
-                    } else if ($status === 'true' && !empty($matches)) {
-                        foreach ($matches as $match) {
-                            if ($match['id'] != $listId) {
-                                $messages['message'] = $newsletterService->subscribeUser($listId, $type);
-                            }
-                        }
-                    } else if ($status === 'true' && empty($matches)) {
-                        $messages['message'] = $newsletterService->subscribeUser($listId, $type);
                     }
                 }
-            }
 
-            return new JsonResponse($messages);
+                return new JsonResponse(array('response' => $messages));
+            } catch(\Exception $e) {
+                $messages[] = array(
+                    'message' => $translator->trans('plugin.newsletter.msg.servicedown'),
+                    'status' => false,
+                );
+            }
         }
     }
 
