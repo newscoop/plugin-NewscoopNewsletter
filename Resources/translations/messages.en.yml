@@ -30,9 +30,9 @@ plugin:
       disabled: "List successfully disabled."
       statuserror: "Cound not change list status."
       fillapikey: "Your MailChimp API key is not defined. Please add it in Settings tab!"
-      successfully: "Successfully subscribed"
-      selectone: "Please, select at least one list to subscribe"
-      unsubscribe: "Successfully unsubscribed."
+      successfully: "Successfully subscribed. Please check your email to confirm your subscription(s)."
+      selectone: "Please, select at least one list to subscribe."
+      unsubscribe: "Successfully unsubscribed from list %list%."
     table:
       info: "Showing _START_ to _END_ of _TOTAL_ entries"
       noentries: "No entries to show"

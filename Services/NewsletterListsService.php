@@ -202,7 +202,7 @@ class NewsletterListsService
      *
      * @return array
      */
-    private function getLists($email)
+    public function getLists($email)
     {
         $lists = $this->initMailchimp()->helper->listsForEmail($email);
 
