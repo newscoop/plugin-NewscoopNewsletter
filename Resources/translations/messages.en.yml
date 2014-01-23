@@ -32,6 +32,7 @@ plugin:
       fillapikey: "Your MailChimp API key is not defined. Please add it in Settings tab!"
       successfully: "Successfully subscribed"
       selectone: "Please, select at least one list to subscribe"
+      unsubscribe: "Successfully unsubscribed."
     table:
       info: "Showing _START_ to _END_ of _TOTAL_ entries"
       noentries: "No entries to show"

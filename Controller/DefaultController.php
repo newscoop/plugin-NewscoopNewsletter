@@ -22,35 +22,37 @@ class DefaultController extends Controller
 
     /**
      * @Route("/newsletter-plugin/subscribe", name="newscoop_newsletter_plugin_subscribe")
+     * @Route("/newsletter-plugin/unsubscribe", name="newscoop_newsletter_plugin_unsubscribe")
      */
     public function subscribeAction(Request $request)
     {
         if ($request->isMethod('POST')) {
             $newsletterService = $this->container->get('newscoop_newsletter_plugin.service');
             $translator = $this->container->get('translator');
+            $user = $this->container->get('user')->getCurrentUser();
             if ($request->request->has('newsletter-lists')) {
-                $listIds = $request->request->get('newsletter-lists');
-                $type = $request->request->get('newsletter-type');
-                if (count($listIds["ids"]) != 1) {
-                    foreach ($listIds["ids"] as $value) {
-                        $newsletterService->subscribeUser($value, $type);
-                    }
+                if ($request->get('_route') === "newscoop_newsletter_plugin_unsubscribe") {
+                    if ($user) {
+                        if ($request->request->has('newsletter-lists')) {
+                            $listId = $request->request->get('newsletter-lists');
+                            $messages = array();
+                            $messages[] = $newsletterService->unsubscribe($user->getEmail(), $listId);
 
-                    return new JsonResponse(array(
-                        'message' => $translator->trans('plugin.newsletter.msg.successfully'),
-                        'status' => true,
-                    ));
+                            return new JsonResponse(array('result' => $messages));
+                        }
+                    }
                 } else {
-                    return new JsonResponse($newsletterService->subscribeUser($listIds["ids"], $type));
+                    $listId = $request->request->get('newsletter-lists');
+                    $type = $request->request->get('newsletter-type');
+                    $messages = array();
+                    $messages[] = $newsletterService->subscribeUser($listId, $type);
+
+                    return new JsonResponse(array('result' => $messages));
                 }
             }
-
-            return new JsonResponse(array(
-                'message' => $translator->trans('plugin.newsletter.msg.selectone'),
-                'status' => false
-            ));
         }
     }
+
     /**
      * @Route("/newsletter-plugin/subscribe-public", name="newscoop_newsletter_plugin_subscribepublic")
      */
@@ -58,6 +60,7 @@ class DefaultController extends Controller
     {
         if ($request->isMethod('POST')) {
             $newsletterService = $this->container->get('newscoop_newsletter_plugin.service');
+            $translator = $this->container->get('translator');
             if ($request->request->has('newsletter-lists-public')) {
                 $listIds = $request->request->get('newsletter-lists-public');
                 if (count($listIds["ids"]) != 1) {
@@ -78,23 +81,6 @@ class DefaultController extends Controller
                 'message' => $translator->trans('plugin.newsletter.msg.selectone'),
                 'status' => false
             ));
-        }
-    }
-
-    /**
-     * @Route("/newsletter-plugin/unsubscribe", name="newscoop_newsletter_plugin_unsubscribe")
-     */
-    public function unsubscribeAction(Request $request)
-    {
-        if ($request->isMethod('POST')) {
-            $user = $this->container->get('user')->getCurrentUser();
-            if ($user) {
-                $newsletterService = $this->container->get('newscoop_newsletter_plugin.service');
-                $email = $request->request->get('email');
-                $listId = $request->request->get('listId');
-
-                return $newsletterService->unsubscribe($email, $listId);
-            }
         }
     }
 }

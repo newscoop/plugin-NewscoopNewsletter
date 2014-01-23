@@ -132,8 +132,11 @@ class NewsletterListsService
                 $type
             );
         } catch (\Mailchimp_List_AlreadySubscribed $e) {
+            $messageArray = explode('.', $e->getMessage());
+            unset($messageArray[count($messageArray)-2]);
+
             return array(
-                'message' => substr($e->getMessage(), 0, -35),
+                'message' => implode('.', $messageArray),
                 'status' => false,
             );
         }
@@ -155,7 +158,17 @@ class NewsletterListsService
     public function isSubscribed($email, $listId)
     {
         try {
-            return in_array($listId, $this->getLists(array('email' => $email))[0]);
+            $lists = $this->getLists(array('email' => $email));
+            $result = array();
+            foreach ($lists as $list) {
+                if ($listId == $list['id']) {
+                    $result[] = true;
+                } else {
+                    $result[] = false;
+                }
+            }
+
+            return in_array(true, $result);
         } catch (\Exception $e) {
             return false;
         }
