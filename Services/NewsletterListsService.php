@@ -49,33 +49,6 @@ class NewsletterListsService
     }
 
     /**
-     * Subscribe for newsletter list
-     *
-     * @param GenericEvent $event
-     *
-     * @return void
-     */
-    public function subscribeOnRegister(GenericEvent $event)
-    {
-        $params = $event->getArguments();
-        $user = array_key_exists('user', $params) ? $params['user'] : null;
-        unset($params['user']);
-
-        if ($this->request->has('newsletter-lists')) {
-            $listIds = $this->request->get('newsletter-lists');
-            foreach ($listIds["ids"] as $value) {
-                if (count($listIds["ids"]) != 1) {
-                    foreach ($listIds["ids"] as $value) {
-                        $this->subscribeUser($value, 'html');
-                    }
-                } else {
-                    $this->subscribeUser($listIds["ids"]);
-                }
-            }
-        }
-    }
-
-    /**
      * Subscribe not registered user to given list id
      *
      * @param string $id   Newsletter list id
