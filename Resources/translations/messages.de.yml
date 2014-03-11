@@ -22,20 +22,20 @@ plugin:
       disabled: Die Liste ist jetzt deaktiviert.
       enabled: 'Die Liste ist jetzt aktiviert. '
       error: API Schlüssel konnte nicht gespeichert werden.
-      errorunsubscribe: Die Abmeldung von der '%Liste%' war nicht möglich.
+      errorunsubscribe: Die Abmeldung von der '%list%' war nicht möglich.
       fillapikey: 'Ihr MailChimp API Schlüssel ist nicht definiert. Bitte fügen Sie ihn unter Einstellungen hinzu. '
       saved: Erfolgreich gespeichert.
       selectone: Wählen Sie bitte mindestens eine Liste zum bestellen aus.
       servicedown: Der Newsletter-Service ist momentan leider nicht verfügbar.
       settingsinfo: Geben Sie den API Schlüssel Ihres MailChimp-Kontos ein.
       statuserror: 'Der Status der Liste konnte nicht geändert werden. '
-      successfully: Die Bestätigungsmail zur Bestellung der '%Liste%' wurde erfolgreich versendet.
+      successfully: Die Bestätigungsmail zur Bestellung der '%list%' wurde erfolgreich versendet.
       syncallerror: Die Liste konnte nicht synchronisiert werden. Versuchen Sie es später noch einmal.
       syncerror: Die ausgewählte Liste konnte nicht synchronisiert werden.
       syncsuccess: Erfolgreich synchronisiert.
       syncuptodate: Eine Synchronisation ist nicht nötig. Die Liste ist bereits aktualisiert.
-      unsubscribe: Erfolgreich von der '%Liste%' abgemeldet.
-      unsuccessfully: Die Anmeldung zur '%Liste%' war nicht möglich.
+      unsubscribe: Erfolgreich von der '%list%' abgemeldet.
+      unsuccessfully: Die Anmeldung zur '%list%' war nicht möglich.
     table:
       filtering: '- gefiltert aus _MAX_Datensätzen'
       info: Zeigt _START_ bis _END_ von _TOTAL_ Eingaben
