@@ -15,6 +15,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Newscoop\NewsletterPluginBundle\Entity\SubscribedUser;
+use Newscoop\Entity\User;
 
 /**
  * Newsletter service
@@ -85,23 +86,37 @@ class NewsletterListsService
     /**
      * Subscribe user to given list id
      *
-     * @param string $id   Newsletter list id
-     * @param string $type Newsletter type Html or text
+     * @param string $id     Newsletter list id
+     * @param string $type   Newsletter type Html or text
+     * @param array  $groups Groups
      *
      * @return void
      */
-    public function subscribeUser($id, $type)
+    public function subscribeUser($id, $type, array $groups = array())
     {
         try {
+
+            $mergeVars = array(
+                'FNAME' => $this->user->getCurrentUser()->getFirstName(),
+                'LNAME' => $this->user->getCurrentUser()->getLastName(),
+            );
+
+            if (!empty($groups)) {
+                $groupings = array();
+                $groupings[] = array(
+                    'id' => $groups['id'],
+                    'groups' => !empty($groups[0]) ? $groups[0] : array(''),
+                );
+
+                $mergeVars['GROUPINGS'] = array($groupings[0]);
+            }
+
             $this->initMailchimp()->lists->subscribe($id,
                 array(
                     'email' => $this->user->getCurrentUser()->getEmail()
                 ),
-                array(
-                    'FNAME' => $this->user->getCurrentUser()->getFirstName(),
-                    'LNAME' => $this->user->getCurrentUser()->getLastName()
-                ),
-                $type
+                $mergeVars,
+                $type, false, true, true, true
             );
         } catch (\Mailchimp_List_AlreadySubscribed $e) {
             $messageArray = explode('.', $e->getMessage());
@@ -152,6 +167,52 @@ class NewsletterListsService
             $this->initMailchimp()->lists->unsubscribe($listId, array('email' => $email));
         } catch (\Exception $e) {
             throw new Exception($e->getMessage());
+        }
+    }
+
+    /**
+     * Get groups for given list id
+     *
+     * @param string $listId
+     *
+     * @return array
+     */
+    public function getListGroups($listId)
+    {
+        return $this->initMailchimp()->lists->interestGroupings($listId);
+    }
+
+    /**
+     * Get groups for given user and list
+     *
+     * @param Newscoop\Entity\User $user
+     * @param string               $listId
+     *
+     * @return array
+     */
+    public function getUserGroups($listId, $groupName)
+    {
+        $user = $this->user->getCurrentUser();
+        if ($user) {
+            $info = $this->initMailchimp()->lists->memberInfo($listId, array(array('email'=>$user->getEmail())));
+            if (!$info['success_count']) {
+                return array();
+            }
+
+            $groups = array();
+            foreach ($info['data'] as $userinfo) {
+                foreach ($userinfo['merges']['GROUPINGS'] as $grouping) {
+                    $groups[$grouping['id']] = $grouping['groups'];
+                }
+            }
+
+            foreach ($groups as $key => $value) {
+                foreach ($value as $k => $v) {
+                    if ($v['name'] == $groupName) {
+                        return $v['interested'];
+                    }
+                }
+            }
         }
     }
 

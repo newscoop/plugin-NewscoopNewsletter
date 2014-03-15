@@ -31,10 +31,11 @@ class DefaultController extends Controller
                 $user = $this->container->get('user')->getCurrentUser();
                 $translator = $this->container->get('translator');
                 $messages = array();
+                $listIdGroups = $request->request->get('newsletter-list-id');
+                $type = $request->request->get('newsletter-type');
                 if ($request->request->has('newsletter-list')) {
                     $lists = $request->request->get('newsletter-list');
                     $listNames = $request->request->get('newsletter-names');
-                    $type = $request->request->get('newsletter-type');
                     foreach ($lists as $listId => $status) {
                         try {
                             $matches = $newsletterService->getLists(array('email' => $user->getEmail()));
@@ -91,6 +92,29 @@ class DefaultController extends Controller
                                 );
                             }
                         }
+                    }
+                }
+
+                if ($request->request->get('groups')) {
+                    $groups = array();
+                    foreach ($request->request->all() as $key => $value) {
+                        if (is_numeric($key)) {
+                            $groups['id'] = $key;
+                            $groups[] = array_filter($value);
+                        }
+                    }
+
+                     try {
+                        $newsletterService->subscribeUser($listIdGroups, $type, $groups);
+                        $messages[] = array(
+                            'message' => $translator->trans('plugin.newsletter.msg.saved'),
+                            'status' => true,
+                        );
+                    } catch(\Exception $e) {
+                        $messages[] = array(
+                            'message' => $translator->trans('plugin.newsletter.msg.notsaved'),
+                            'status' => false,
+                        );
                     }
                 }
 

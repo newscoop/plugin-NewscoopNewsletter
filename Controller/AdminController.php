@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Newscoop\NewsletterPluginBundle\Form\Type\SettingsType;
 use Newscoop\NewsletterPluginBundle\Entity\NewsletterList;
+use Newscoop\NewsletterPluginBundle\Entity\NewsletterGroup;
 
 class AdminController extends Controller
 {
@@ -43,7 +44,7 @@ class AdminController extends Controller
             ->getSingleScalarResult();
 
         if ($preferencesService->mailchimp_apikey != null) {
-            if ((int)$newsletterListsCount === 0) {
+            /*if ((int)$newsletterListsCount === 0) {
                 $newsletterService->initMailchimp($preferencesService->mailchimp_apikey);
                 $lists = $newsletterService->getMailchimpLists();
 
@@ -51,6 +52,7 @@ class AdminController extends Controller
                     if (is_array($value)) {
                         foreach ($value as $data) {
                             $newsletterList = new NewsletterList();
+
                             $newsletterList->setListId($data['id']);
                             $newsletterList->setName($data['name']);
                             $newsletterList->setSubscribersCount($data['stats']['member_count']);
@@ -58,10 +60,28 @@ class AdminController extends Controller
                             $newsletterList->setCreatedAt(new \DateTime($data['date_created']));
                             $em->persist($newsletterList);
                             $em->flush();
+
+                            try {
+                                $listGroups = $this->get('newscoop_newsletter_plugin.service')->getListGroups($data['id']);
+                                $currentList = $em->getRepository('Newscoop\NewsletterPluginBundle\Entity\NewsletterList')
+                                    ->findOneByListId($data['id']);
+
+                                foreach ($listGroups[0]['groups'] as $key => $value) {
+                                    $newsletterGroup = new NewsletterGroup();
+                                    $newsletterGroup->setList($currentList);
+                                    $newsletterGroup->setGroupId($listGroups[0]['id']);
+                                    $newsletterGroup->setName($value['name']);
+                                    $newsletterGroup->setSubscribersCount(is_null($value['subscribers']) ? 0 : $value['subscribers']);
+                                    $em->persist($newsletterGroup);
+                                }
+                            } catch (\Exception $e) {
+                            }
                         }
                     }
                 }
             }
+
+            $em->flush();*/
         } else {
             $message = $translator->trans('plugin.newsletter.msg.fillapikey');
         }

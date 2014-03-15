@@ -52,6 +52,11 @@ class MetaNewsletter
     private $service;
 
     /**
+     * @var array
+     */
+    public $groups;
+
+    /**
      * @param NewsletterList $list
      */
     public function __construct(NewsletterList $list = null)
@@ -60,13 +65,13 @@ class MetaNewsletter
             return;
         }
 
-        //$this->service = $this->container->get('newscoop_newsletter_plugin.service');
         $this->service = \Zend_Registry::get('container')->getService('newscoop_newsletter_plugin.service');
         $this->created = $this->getCreated($list);
         $this->enabled = $this->getEnabled($list);
         $this->name = $this->getName($list);
         $this->id = $this->getListId($list);
         $this->subscribers_count = $this->getSubscribers($list);
+        $this->groups = $this->getGroups($list);
     }
 
 
@@ -83,6 +88,18 @@ class MetaNewsletter
     }
 
     /**
+     * Get list id
+     *
+     * @param NewsletterList $list
+     *
+     * @return string
+     */
+    protected function getGroups($list)
+    {
+        return $list->getGroups();
+    }
+
+    /**
      * Chceck is user email is subscribed to list
      *
      * @param string $email  User email
@@ -93,6 +110,19 @@ class MetaNewsletter
     public function isSubscribed($email, $listId)
     {
         return $this->service->isSubscribed($email, $listId);
+    }
+
+    /**
+     * Chceck is user email is subscribed to list
+     *
+     * @param string $listId    List id
+     * @param string $groupName Group name
+     *
+     * @return bool
+     */
+    public function isSubscribedToGroup($listId, $groupName)
+    {
+        return $this->service->getUserGroups($listId, $groupName);
     }
 
     /**

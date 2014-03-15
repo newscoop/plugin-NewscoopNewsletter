@@ -25,8 +25,10 @@ class NewsletterListRepository extends EntityRepository
     public function getListByCriteria(ListCriteria $criteria)
     {
         $qb = $this->createQueryBuilder('nl');
-
-        $qb->andWhere('nl.is_active = :is_active')
+        $qb
+            ->select('nl', 'g')
+            ->leftJoin('nl.groups', 'g')
+            ->where('nl.is_active = :is_active')
             ->setParameter('is_active', true);
 
         foreach ($criteria->perametersOperators as $key => $operator) {

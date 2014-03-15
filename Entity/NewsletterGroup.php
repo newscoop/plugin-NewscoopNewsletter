@@ -8,16 +8,15 @@
 
 namespace Newscoop\NewsletterPluginBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping AS ORM;
 
 /**
  * Newsletter list entity
  *
- * @ORM\Entity(repositoryClass="Newscoop\NewsletterPluginBundle\Entity\Repository\NewsletterListRepository")
- * @ORM\Table(name="plugin_newsletter_lists")
+ * @ORM\Entity()
+ * @ORM\Table(name="plugin_newsletter_groups")
  */
-class NewsletterList
+class NewsletterGroup
 {
     /**
      * @ORM\Id()
@@ -28,22 +27,23 @@ class NewsletterList
     private $id;
 
     /**
-     * @ORM\Column(type="string", name="list_id")
-     * @var string
+     * @ORM\ManyToOne(targetEntity="\Newscoop\NewsletterPluginBundle\Entity\NewsletterList", inversedBy="groups")
+     * @ORM\JoinColumn(name="list_id", referencedColumnName="id")
+     * @var Newscoop\NewsletterPluginBundle\Entity\NewsletterList
      */
-    private $listId;
+    private $list;
 
     /**
-     * @ORM\OneToMany(targetEntity="Newscoop\NewsletterPluginBundle\Entity\NewsletterGroup", mappedBy="list")
-     * @var array
-     */
-    private $groups;
-
-    /**
-     * @ORM\Column(type="string", name="list_name")
+     * @ORM\Column(type="string", name="group_name")
      * @var string
      */
     private $name;
+
+    /**
+     * @ORM\Column(type="string", name="group_id")
+     * @var string
+     */
+    private $groupId;
 
     /**
      * @ORM\Column(type="integer", name="subscribers_count")
@@ -64,21 +64,15 @@ class NewsletterList
     private $created_at;
 
     /**
-     * @ORM\Column(type="datetime", name="last_sync")
-     * @var datetime
-     */
-    private $lastSynchronized;
-
-    /**
      * @ORM\Column(type="boolean", name="is_active")
      * @var boolean
      */
     private $is_active;
 
     public function __construct() {
-        $this->groups = new ArrayCollection();
         $this->setIsEnabled(true);
         $this->setIsActive(true);
+        $this->setCreatedAt(new \DateTime());
     }
 
     /**
@@ -96,9 +90,9 @@ class NewsletterList
      *
      * @return string
      */
-    public function getListId()
+    public function getList()
     {
-        return $this->listId;
+        return $this->list;
     }
 
     /**
@@ -107,21 +101,35 @@ class NewsletterList
      * @param  string $listId
      * @return string
      */
-    public function setListId($listId)
+    public function setList($list)
     {
-        $this->listId = $listId;
+        $this->list = $list;
+        
+        return $this;
+    }
+
+    /**
+     * Set group id
+     *
+     * @param string $groupId
+     *
+     * @return string
+     */
+    public function setGroupId($groupId)
+    {
+        $this->groupId = $groupId;
 
         return $this;
     }
 
     /**
-     * Get groups
+     * Get group id
      *
-     * @return array
+     * @return string
      */
-    public function getGroups()
+    public function getGroupId()
     {
-        return $this->groups;
+        return $this->groupId;
     }
 
     /**
@@ -235,29 +243,6 @@ class NewsletterList
     public function setCreatedAt(\DateTime $created_at)
     {
         $this->created_at = $created_at;
-        
-        return $this;
-    }
-
-    /**
-     * Get synchronization date
-     *
-     * @return datetime
-     */
-    public function getLastSynchronized()
-    {
-        return $this->lastSynchronized;
-    }
-
-    /**
-     * Set synchronization date
-     *
-     * @param  datetime $lastSynchronized
-     * @return datetime
-     */
-    public function setLastSynchronized(\DateTime $lastSynchronized)
-    {
-        $this->lastSynchronized = $lastSynchronized;
         
         return $this;
     }
