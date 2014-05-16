@@ -1,52 +1,54 @@
 Plugins: Plugins
 plugin:
-  newsletter:
-    label:
-      apikey: MailChimp API Schlüssel
-      config: Konfiguration
-      created: Erstellt
-      disable: Deaktivieren
-      enable: Aktivieren
-      lastsync: Letzte Synchronisation
-      lists: Listen
-      maintitle: Newsletter Plugin
-      name: Name
-      options: Optionen
-      search: Suche
-      settings: Einstellungen
-      subscribers: Abonnenten
-      sync: Synchronisieren
-      syncall: Alle Listen synchronisieren
-      title: Newsletter
-    msg:
-      disabled: Die Liste ist jetzt deaktiviert.
-      enabled: 'Die Liste ist jetzt aktiviert. '
-      error: API Schlüssel konnte nicht gespeichert werden.
-      errorunsubscribe: Die Abmeldung von der '%list%' war nicht möglich.
-      fillapikey: 'Ihr MailChimp API Schlüssel ist nicht definiert. Bitte fügen Sie ihn unter Einstellungen hinzu. '
-      saved: Erfolgreich gespeichert.
-      selectone: Wählen Sie bitte mindestens eine Liste zum bestellen aus.
-      servicedown: Der Newsletter-Service ist momentan leider nicht verfügbar.
-      settingsinfo: Geben Sie den API Schlüssel Ihres MailChimp-Kontos ein.
-      statuserror: 'Der Status der Liste konnte nicht geändert werden. '
-      successfully: Die Bestätigungsmail zur Bestellung der '%list%' wurde erfolgreich versendet.
-      syncallerror: Die Liste konnte nicht synchronisiert werden. Versuchen Sie es später noch einmal.
-      syncerror: Die ausgewählte Liste konnte nicht synchronisiert werden.
-      syncsuccess: Erfolgreich synchronisiert.
-      syncuptodate: Eine Synchronisation ist nicht nötig. Die Liste ist bereits aktualisiert.
-      unsubscribe: Erfolgreich von der '%list%' abgemeldet.
-      unsuccessfully: Die Anmeldung zur '%list%' war nicht möglich.
-    table:
-      filtering: '- gefiltert aus _MAX_Datensätzen'
-      info: Zeigt _START_ bis _END_ von _TOTAL_ Eingaben
-      label:
-        filter: Filter
-        first: Erster
-        last: Letzter
-        next: Nächster
-        norecords: Keine Datensätze gefunden.
-        previous: Vorheriger
-        processing: In Bearbeitung...
-        search: Suche
-      menu: Zeige _MENU_ Datensätze
-      noentries: Es sind keine Eingaben vorhanden
+    newsletter:
+        label:
+            lists: Listen
+            search: Suche
+            settings: Einstellungen
+            apikey: 'MailChimp API Schlüssel'
+            title: Newsletter
+            maintitle: 'Newsletter Plugin'
+            config: Konfiguration
+            sync: Synchronisieren
+            enable: Aktivieren
+            disable: Deaktivieren
+            name: Name
+            subscribers: Abonnenten
+            created: Erstellt
+            options: Optionen
+            lastsync: 'Letzte Synchronisation'
+            syncall: 'Alle Listen synchronisieren'
+        msg:
+            saved: 'Erfolgreich gespeichert.'
+            notsaved: 'Could not proceed this operation at the moment.'
+            selectgroup: 'Please select at least one group!'
+            error: 'API Schlüssel konnte nicht gespeichert werden.'
+            settingsinfo: 'Geben Sie den API Schlüssel Ihres MailChimp-Kontos ein.'
+            syncerror: 'Die ausgewählte Liste konnte nicht synchronisiert werden.'
+            syncallerror: 'Die Liste konnte nicht synchronisiert werden. Versuchen Sie es später noch einmal.'
+            syncsuccess: 'Erfolgreich synchronisiert.'
+            syncuptodate: 'Eine Synchronisation ist nicht nötig. Die Liste ist bereits aktualisiert.'
+            enabled: 'Die Liste ist jetzt aktiviert. '
+            disabled: 'Die Liste ist jetzt deaktiviert.'
+            statuserror: 'Der Status der Liste konnte nicht geändert werden. '
+            fillapikey: 'Ihr MailChimp API Schlüssel ist nicht definiert. Bitte fügen Sie ihn unter Einstellungen hinzu. '
+            successfully: 'Die Bestätigungsmail zur Bestellung der ''%list%'' wurde erfolgreich versendet.'
+            selectone: 'Wählen Sie bitte mindestens eine Liste zum bestellen aus.'
+            unsubscribe: 'Erfolgreich von der ''%list%'' abgemeldet.'
+            errorunsubscribe: 'Die Abmeldung von der ''%list%'' war nicht möglich.'
+            unsuccessfully: 'Die Anmeldung zur ''%list%'' war nicht möglich.'
+            servicedown: 'Der Newsletter-Service ist momentan leider nicht verfügbar.'
+        table:
+            info: 'Zeigt _START_ bis _END_ von _TOTAL_ Eingaben'
+            noentries: 'Es sind keine Eingaben vorhanden'
+            filtering: '- gefiltert aus _MAX_Datensätzen'
+            menu: 'Zeige _MENU_ Datensätze'
+            label:
+                search: Suche
+                filter: Filter
+                processing: 'In Bearbeitung...'
+                last: Letzter
+                next: Nächster
+                first: Erster
+                previous: Vorheriger
+                norecords: 'Keine Datensätze gefunden.'
