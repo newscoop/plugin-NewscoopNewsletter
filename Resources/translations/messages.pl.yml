@@ -1,0 +1,54 @@
+Plugins: Wtyczki
+plugin:
+    newsletter:
+        label:
+            lists: null
+            search: Szukaj
+            settings: Ustawienia
+            apikey: null
+            title: null
+            maintitle: null
+            config: null
+            sync: null
+            enable: null
+            disable: null
+            name: Nazwa
+            subscribers: Subskrynenci
+            created: Utworzony
+            options: null
+            lastsync: null
+            syncall: null
+        msg:
+            saved: null
+            notsaved: 'Could not proceed this operation at the moment.'
+            selectgroup: 'Please select at least one group!'
+            error: null
+            settingsinfo: null
+            syncerror: null
+            syncallerror: null
+            syncsuccess: null
+            syncuptodate: null
+            enabled: null
+            disabled: null
+            statuserror: null
+            fillapikey: null
+            successfully: null
+            selectone: null
+            unsubscribe: null
+            errorunsubscribe: null
+            unsuccessfully: null
+            servicedown: null
+        table:
+            info: 'Widoczne _START_ do _END_ z _TOTAL_ rekordów'
+            noentries: 'Nie ma żadnych rekordów'
+            filtering: ' - filtrowanie z _MAX_ rekordów'
+            menu: 'Pokazuje _MENU_ rekordów'
+            label:
+                search: Szukaj
+                filter: Filtrowanie
+                processing: Przetważanie...
+                last: Ostatni
+                next: Następny
+                first: Pierwszy
+                previous: Poprzedni
+                norecords: 'Nie znaleziono żadnych rekordów.'

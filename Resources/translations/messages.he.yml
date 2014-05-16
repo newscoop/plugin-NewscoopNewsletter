@@ -1,0 +1,54 @@
+Plugins: null
+plugin:
+    newsletter:
+        label:
+            lists: null
+            search: null
+            settings: null
+            apikey: null
+            title: null
+            maintitle: null
+            config: null
+            sync: null
+            enable: null
+            disable: null
+            name: null
+            subscribers: null
+            created: null
+            options: null
+            lastsync: null
+            syncall: null
+        msg:
+            saved: null
+            notsaved: 'Could not proceed this operation at the moment.'
+            selectgroup: 'Please select at least one group!'
+            error: null
+            settingsinfo: null
+            syncerror: null
+            syncallerror: null
+            syncsuccess: null
+            syncuptodate: null
+            enabled: null
+            disabled: null
+            statuserror: null
+            fillapikey: null
+            successfully: null
+            selectone: null
+            unsubscribe: null
+            errorunsubscribe: null
+            unsuccessfully: null
+            servicedown: null
+        table:
+            info: null
+            noentries: null
+            filtering: null
+            menu: null
+            label:
+                search: null
+                filter: null
+                processing: null
+                last: null
+                next: null
+                first: null
+                previous: null
+                norecords: null

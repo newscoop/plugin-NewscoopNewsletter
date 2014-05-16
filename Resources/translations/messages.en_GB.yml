@@ -1,0 +1,54 @@
+Plugins: Plugins
+plugin:
+    newsletter:
+        label:
+            lists: Lists
+            search: Search
+            settings: Settings
+            apikey: 'MailChimp API Key'
+            title: Newsletter
+            maintitle: 'Newsletter Plugin'
+            config: configuration
+            sync: Synchronize
+            enable: Enable
+            disable: Disable
+            name: Name
+            subscribers: Subscribers
+            created: Created
+            options: Options
+            lastsync: 'Last synchronization'
+            syncall: 'Synchronize all lists'
+        msg:
+            saved: 'Successfully saved.'
+            notsaved: 'Could not proceed this operation at the moment.'
+            selectgroup: 'Please select at least one group!'
+            error: 'Could not save your API key.'
+            settingsinfo: 'Add your MailChimp account API Key to make it work!'
+            syncerror: 'Could not synchronize selected list.'
+            syncallerror: 'Could not synchronize lists, try again later.'
+            syncsuccess: 'Successfully synchronized.'
+            syncuptodate: 'Nothing to synchronize. List is up to date.'
+            enabled: 'List successfully enabled.'
+            disabled: 'List successfully disabled.'
+            statuserror: 'Could not change list status.'
+            fillapikey: 'Your MailChimp API key is not defined. Please add it in the Settings tab!'
+            successfully: 'Subscription confirmation email for ''%list%'' list has been sent successfully.'
+            selectone: 'Please select at least one list to subscribe to.'
+            unsubscribe: 'Successfully unsubscribed from list ''%list%''.'
+            errorunsubscribe: 'Could not unsubscribe from list ''%list%''.'
+            unsuccessfully: 'Could not subscribe to ''%list%''.'
+            servicedown: 'Sorry, the newsletter service is not available at the moment.'
+        table:
+            info: 'Showing _START_ to _END_ of _TOTAL_ entries'
+            noentries: 'No entries to show'
+            filtering: '- filtering from _MAX_ records'
+            menu: 'Display _MENU_ records'
+            label:
+                search: Search
+                filter: Filter
+                processing: Processing...
+                last: Last
+                next: Next
+                first: First
+                previous: Previous
+                norecords: 'No records found.'
