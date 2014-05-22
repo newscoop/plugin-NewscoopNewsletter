@@ -20,8 +20,8 @@ plugin:
             syncall: 'Synchronize all lists'
         msg:
             saved: 'Successfully saved.'
-            notsaved: 'Could not proceed this operation at the moment.'
-            selectgroup: 'Please select at least one group!'
+            notsaved: null
+            selectgroup: null
             error: 'Could not save your API key.'
             settingsinfo: 'Add your MailChimp account API Key to make it work!'
             syncerror: 'Could not synchronize selected list.'
