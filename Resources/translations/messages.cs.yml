@@ -1,54 +1,54 @@
-Plugins: null
+Plugins: Plug-iny
 plugin:
     newsletter:
         label:
-            lists: null
-            search: null
-            settings: null
-            apikey: null
-            title: null
-            maintitle: null
-            config: null
-            sync: null
-            enable: null
-            disable: null
-            name: null
-            subscribers: null
-            created: null
-            options: null
-            lastsync: null
-            syncall: null
+            lists: Seznamy
+            search: Hledej
+            settings: Nastavení
+            apikey: 'MailChimp API Klíč'
+            title: Newsletter
+            maintitle: 'Plugin Newsletteru'
+            config: Konfigurace
+            sync: Synchronizovat
+            enable: Povolit
+            disable: Zakázat
+            name: Název
+            subscribers: Předplatitelé
+            created: Vytvořeno
+            options: Možnosti
+            lastsync: 'Poslední synchronizace'
+            syncall: 'Synchronizovat všechny seznamy'
         msg:
-            saved: null
-            notsaved: null
-            selectgroup: null
-            error: null
-            settingsinfo: null
-            syncerror: null
-            syncallerror: null
-            syncsuccess: null
-            syncuptodate: null
-            enabled: null
-            disabled: null
-            statuserror: null
-            fillapikey: null
-            successfully: null
-            selectone: null
-            unsubscribe: null
-            errorunsubscribe: null
-            unsuccessfully: null
+            saved: 'Úspěšně uloženo.'
+            notsaved: 'Nyní nelze provést tuto operaci.'
+            selectgroup: 'Prosíme vyberte alespoň jednu skupinu!'
+            error: 'Nebylo možno uložit váš API klíč.'
+            settingsinfo: 'Přidat MailChimp účet API klíče ke správnému fungování!'
+            syncerror: 'Nebylo možno synchronizovat vybraný seznam.'
+            syncallerror: 'Nebylo možné synchronizovat seznamy, zkuste znovu později.'
+            syncsuccess: 'Úspěšně synchronizováno.'
+            syncuptodate: 'Nic k synchronizaci. Seznam je aktuální.'
+            enabled: 'Seznam úspěšně povolen.'
+            disabled: 'Seznam úspěšně zakázán.'
+            statuserror: 'Nelze změnit status seznamu.'
+            fillapikey: 'Váš MailChimp API Klíč není definován. Prosíme přidejte ho v záložce Nastavení!'
+            successfully: 'Potvrzovací e-mail ohledně přihlášení k  ''%seznam%'' seznamu byl úspěšně odeslán.'
+            selectone: 'Prosím vyberte alespoň jeden seznam k přihlášení.'
+            unsubscribe: 'Úspěšné odhlášení ze seznamu ''%seznam%'''
+            errorunsubscribe: 'Nelze se odhlásit ze seznamu ''%seznam%'''
+            unsuccessfully: 'Neproběhlo přihlášení k ''%seznam%''.'
             servicedown: null
         table:
-            info: null
-            noentries: null
-            filtering: null
-            menu: null
+            info: 'Ukázat _START_ až do _END_ z _TOTAL_ záznamů'
+            noentries: 'Nejsou zde žádné záznamy k zobrazení'
+            filtering: '- filtrováno z _MAX_ záznamů'
+            menu: 'Zobrazit _MENU_ záznamy'
             label:
-                search: null
-                filter: null
-                processing: null
-                last: null
-                next: null
-                first: null
-                previous: null
-                norecords: null
+                search: Hledat
+                filter: Filtrovat
+                processing: Zpracovávám...
+                last: Poslední
+                next: Další
+                first: První
+                previous: Předchozí
+                norecords: 'Nebyly nalezeny žádné záznamy.'
