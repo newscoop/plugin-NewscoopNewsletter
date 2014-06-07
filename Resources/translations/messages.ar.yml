@@ -36,7 +36,7 @@ plugin:
             selectone: null
             unsubscribe: null
             errorunsubscribe: null
-            unsuccessfully: null
+            unsuccessfully: 'لم يتم الإشتراك في ''%list%'''
             servicedown: null
         table:
             info: null
