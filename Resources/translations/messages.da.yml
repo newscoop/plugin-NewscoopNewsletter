@@ -1,54 +1,54 @@
-Plugins: null
+Plugins: Plugins
 plugin:
     newsletter:
         label:
-            lists: null
-            search: null
-            settings: null
-            apikey: null
-            title: null
-            maintitle: null
-            config: null
-            sync: null
-            enable: null
-            disable: null
-            name: null
-            subscribers: null
-            created: null
-            options: null
-            lastsync: null
-            syncall: null
+            lists: Lister
+            search: Søg
+            settings: Indstillinger
+            apikey: 'MailChimp API nøgle'
+            title: Nyhedsbrev
+            maintitle: 'Nyhedsbrev plugin'
+            config: opsætning
+            sync: Synkroniser
+            enable: 'Slå til'
+            disable: 'Slå fra'
+            name: Navn
+            subscribers: Abonnenter
+            created: Oprettet
+            options: Indstillinger
+            lastsync: 'Sidste synkronisation'
+            syncall: 'Synkroniser alle lister'
         msg:
-            saved: null
-            notsaved: null
-            selectgroup: null
-            error: null
-            settingsinfo: null
-            syncerror: null
-            syncallerror: null
-            syncsuccess: null
-            syncuptodate: null
-            enabled: null
-            disabled: null
-            statuserror: null
-            fillapikey: null
-            successfully: null
-            selectone: null
-            unsubscribe: null
-            errorunsubscribe: null
-            unsuccessfully: null
-            servicedown: null
+            saved: Gemt.
+            notsaved: 'Handlingen kunne ikke gennemføres.'
+            selectgroup: 'Vælg mindst én gruppe!'
+            error: 'Din API nøgle kunne ikke gemmes.'
+            settingsinfo: 'Du skal tilføje din MailChimp API nøgle!'
+            syncerror: 'Den valgte liste kunne ikke synkroniseres.'
+            syncallerror: 'De valgte lister kunne ikke synkroniseres. Prøv igen senere.'
+            syncsuccess: 'Synkronisering lykkedes.'
+            syncuptodate: 'Intet at synkronisere. Listen er opdateret.'
+            enabled: 'Listen blev slået til.'
+            disabled: 'Listen blev slået fra.'
+            statuserror: 'Listens status kunne ikke ændres.'
+            fillapikey: 'Din MailChimp API nøgle mangler. Tilføj den under indstillinger.'
+            successfully: 'Bekræftelses email for abonnement på ''%list%'' er sendt.'
+            selectone: 'Vælg mindst en liste at abonnere på.'
+            unsubscribe: 'Du abonnerer ikke længere på ''%list%''.'
+            errorunsubscribe: 'Kunne ikke fjerne abonnementet på ''%list%''.'
+            unsuccessfully: 'Kunne ikke oprette abonnement på ''%list%''.'
+            servicedown: 'Nyhedsbrevs servicen er ikke tilgængelig i øjeblikket.'
         table:
-            info: null
-            noentries: null
-            filtering: null
-            menu: null
+            info: 'Viser _START_ til _END_ af _TOTAL_'
+            noentries: 'Intet at vise'
+            filtering: '- filtreret fra _MAX_ opslag'
+            menu: 'Vis _MENU_ opslag'
             label:
-                search: null
-                filter: null
-                processing: null
-                last: null
-                next: null
-                first: null
-                previous: null
-                norecords: null
+                search: Søg
+                filter: Filtrér
+                processing: Arbejder...
+                last: Sidste
+                next: Næste
+                first: Første
+                previous: Forrige
+                norecords: 'Ingen opslag.'
