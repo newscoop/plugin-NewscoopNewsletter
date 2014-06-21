@@ -1,28 +1,28 @@
-Plugins: null
+Plugins: 'وحدات قابسة'
 plugin:
     newsletter:
         label:
-            lists: null
-            search: null
-            settings: null
-            apikey: null
-            title: null
-            maintitle: null
-            config: null
-            sync: null
-            enable: null
-            disable: null
-            name: null
-            subscribers: null
-            created: null
-            options: null
-            lastsync: null
-            syncall: null
+            lists: القوائم
+            search: بحث
+            settings: الإعدادات
+            apikey: 'مفتاح لواجهة برمجة التطبيقات MailChimp'
+            title: 'النشرة الإخبارية'
+            maintitle: 'ملحق النشرة الإخبارية.'
+            config: الإعدادات.
+            sync: التزامن
+            enable: التمكين
+            disable: التعطيل
+            name: اسم
+            subscribers: المشتركون
+            created: 'تم الانشاء'
+            options: إختيارات
+            lastsync: 'التزامن الأخير'
+            syncall: 'زامن جميع القوائم'
         msg:
-            saved: null
+            saved: 'حفظ بنجاح'
             notsaved: null
             selectgroup: null
-            error: null
+            error: 'لم يستطع أن يحفظ المفتاح لواجهة برمجة التطبيقات الخاصة بك.'
             settingsinfo: null
             syncerror: null
             syncallerror: null
