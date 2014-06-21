@@ -23,12 +23,12 @@ plugin:
             notsaved: null
             selectgroup: null
             error: 'لم يستطع أن يحفظ المفتاح لواجهة برمجة التطبيقات الخاصة بك.'
-            settingsinfo: null
-            syncerror: null
-            syncallerror: null
-            syncsuccess: null
-            syncuptodate: null
-            enabled: null
+            settingsinfo: 'حتى يعمل بشكل صحيح أضف مفتاحك لواجهة برمجة التطبيقات لحساب MailChimp لك!'
+            syncerror: 'لم يكن قادرا أن يزامن القائمة المختارة.'
+            syncallerror: 'لم يكن قادرا أن يزامن القوائم فحاول مرة ثانية في وقت لاحق.'
+            syncsuccess: 'تم التزامن بنجاح.'
+            syncuptodate: 'لا شيء للتزامن مع. القائمة محدثة.'
+            enabled: 'تم تمكين القائمة بنجاح.'
             disabled: null
             statuserror: null
             fillapikey: null
