@@ -25,12 +25,12 @@ plugin:
             error: 'Could not save your API key.'
             settingsinfo: 'Add your MailChimp account API Key to make it work!'
             syncerror: 'Could not synchronize selected list.'
-            syncallerror: 'Could not synchronize lists, try again later.'
+            syncallerror: null
             syncsuccess: 'Successfully synchronized.'
             syncuptodate: 'Nothing to synchronize. List is up to date.'
             enabled: 'List successfully enabled.'
             disabled: 'List successfully disabled.'
-            statuserror: 'Could not change list status.'
+            statuserror: null
             fillapikey: 'Your MailChimp API key is not defined. Please add it in the Settings tab!'
             successfully: 'Subscription confirmation email for ''%list%'' list has been sent successfully.'
             selectone: 'Please select at least one list to subscribe to.'
