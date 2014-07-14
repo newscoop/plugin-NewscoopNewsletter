@@ -25,12 +25,12 @@ plugin:
             error: 'Din API nøgle kunne ikke gemmes.'
             settingsinfo: 'Du skal tilføje din MailChimp API nøgle!'
             syncerror: 'Den valgte liste kunne ikke synkroniseres.'
-            syncallerror: null
+            syncallerror: 'De valgte lister kunne ikke synkroniseres. Prøv igen senere.'
             syncsuccess: 'Synkronisering lykkedes.'
             syncuptodate: 'Intet at synkronisere. Listen er opdateret.'
             enabled: 'Listen blev slået til.'
             disabled: 'Listen blev slået fra.'
-            statuserror: null
+            statuserror: 'Listens status kunne ikke ændres.'
             fillapikey: 'Din MailChimp API nøgle mangler. Tilføj den under indstillinger.'
             successfully: 'Bekræftelses email for abonnement på ''%list%'' er sendt.'
             selectone: 'Vælg mindst en liste at abonnere på.'
