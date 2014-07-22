@@ -1,54 +1,54 @@
-Plugins: null
+Plugins: Plaqinlər
 plugin:
     newsletter:
         label:
-            lists: null
-            search: null
-            settings: null
-            apikey: null
-            title: null
-            maintitle: null
-            config: null
-            sync: null
-            enable: null
-            disable: null
-            name: null
-            subscribers: null
-            created: null
-            options: null
-            lastsync: null
-            syncall: null
+            lists: Siyahılar
+            search: Axtar
+            settings: Parametrlər
+            apikey: 'MailChimp API Açarı'
+            title: 'Xəbər məktubu'
+            maintitle: 'Xəbər Məktubu plaqini'
+            config: konfiqurasiya
+            sync: Sinxronlaşdır
+            enable: Aktivləşdir
+            disable: 'Deaktivasiya et'
+            name: Ad
+            subscribers: Abunələr
+            created: Yaradıldı
+            options: Seçimlər
+            lastsync: 'Son sinxronlaşdırma'
+            syncall: 'Bütün siyahını sinxronlaşdır'
         msg:
-            saved: null
-            notsaved: null
-            selectgroup: null
-            error: null
-            settingsinfo: null
-            syncerror: null
-            syncallerror: null
-            syncsuccess: null
-            syncuptodate: null
-            enabled: null
-            disabled: null
-            statuserror: null
-            fillapikey: null
-            successfully: null
-            selectone: null
-            unsubscribe: null
-            errorunsubscribe: null
-            unsuccessfully: null
-            servicedown: null
+            saved: 'Uğurla saxlandı.'
+            notsaved: 'Hazırda bu əməliyyatı həyata keçirə bilmədik.'
+            selectgroup: 'Lütfən, azı bir qrup seç!'
+            error: 'API açarı yadda saxlaya bilmədi.'
+            settingsinfo: 'MailChimp hesabı API Açarını daxil et ki, o işləsin!'
+            syncerror: 'Seçilmiş siyahı sinxronlaşdırıla bilmədi.'
+            syncallerror: 'Siyahıları sinxronlaşdıra bilmədik, birazdan yenə sına.'
+            syncsuccess: 'Müvəffəqiyyətlə sinxronlaşdırıldı.'
+            syncuptodate: 'Sinxronlaşdırılası heç nə yoxdur. Siyahı tam yenidir.'
+            enabled: 'Siyahı müvəffəqiyyətlə açıldı.'
+            disabled: 'Siyahı müvəffəqiyyətlə bağlandı.'
+            statuserror: 'Siyahı statusu dəyişilə bilmədi.'
+            fillapikey: 'Sənin MailChimp API açarın müəyyən edilmədi. Lütfən, onu Parametlər zolağına əlavə et!'
+            successfully: '''%list%'' siyahısı üçün abunəliyin təsdiqi məktubu müvəffəqiyyətlə göndərilmişdir.'
+            selectone: 'Lütfən, abunəlik üçün azı bir siyahı seç.'
+            unsubscribe: 'Müvəffəqiyyətlə ''%list%'' siyahısı abunəliyindən çıxdı.'
+            errorunsubscribe: '''%list%'' siyahısının abunəliyindən çıxa bilmədi.'
+            unsuccessfully: '''%list%'' siyahısına abunə ola bilmədi.'
+            servicedown: 'Üzr istəyirik, hazırda xəbərqəzeti xidməti mümkün deyil.'
         table:
-            info: null
-            noentries: null
-            filtering: null
-            menu: null
+            info: BÜTÜN_girişlərin_BAŞDAN_SONA_kimi_nümayişi
+            noentries: 'Nümayiş üçün yazı yoxdur'
+            filtering: '- _MAX_ yazılarından filterləmə'
+            menu: '_MENYU_ yazılarını göstər'
             label:
-                search: null
-                filter: null
-                processing: null
-                last: null
-                next: null
-                first: null
-                previous: null
-                norecords: null
+                search: Axtar
+                filter: Filtr
+                processing: İcradadır...
+                last: Son
+                next: Növbəti
+                first: İlk
+                previous: Əvvəlki
+                norecords: 'Yazı tapılmadı.'
