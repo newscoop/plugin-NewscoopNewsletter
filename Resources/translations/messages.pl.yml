@@ -2,22 +2,22 @@ Plugins: Wtyczki
 plugin:
     newsletter:
         label:
-            lists: null
+            lists: Listy
             search: Szukaj
             settings: Ustawienia
-            apikey: null
-            title: null
-            maintitle: null
-            config: null
-            sync: null
-            enable: null
-            disable: null
+            apikey: 'Klucz API MailChimp'
+            title: Newsletter
+            maintitle: Newsletter
+            config: konfiguracja
+            sync: Synchronizuj
+            enable: Włącz
+            disable: Wyłącz
             name: Nazwa
             subscribers: Subskrynenci
             created: Utworzony
             options: Opcje
-            lastsync: null
-            syncall: null
+            lastsync: 'Ostatnia synchronizacja'
+            syncall: 'Synchronizuj wszystkie listy'
         msg:
             saved: 'Zapisano pomyślnie.'
             notsaved: null
