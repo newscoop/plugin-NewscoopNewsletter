@@ -15,11 +15,11 @@ plugin:
             name: Nazwa
             subscribers: Subskrynenci
             created: Utworzony
-            options: null
+            options: Opcje
             lastsync: null
             syncall: null
         msg:
-            saved: null
+            saved: 'Zapisano pomyślnie.'
             notsaved: null
             selectgroup: null
             error: null
