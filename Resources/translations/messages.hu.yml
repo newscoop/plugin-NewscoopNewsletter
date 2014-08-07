@@ -15,7 +15,7 @@ plugin:
             name: null
             subscribers: null
             created: null
-            options: null
+            options: Beállítások
             lastsync: null
             syncall: null
         msg:
