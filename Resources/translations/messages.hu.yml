@@ -5,7 +5,7 @@ plugin:
             lists: null
             search: null
             settings: null
-            apikey: null
+            apikey: 'MailChimp API-kulcs'
             title: null
             maintitle: null
             config: null
