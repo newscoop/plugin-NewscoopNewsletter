@@ -1,10 +1,10 @@
-Plugins: null
+Plugins: Extensions
 plugin:
     newsletter:
         label:
-            lists: null
-            search: null
-            settings: null
+            lists: Listes
+            search: Recherche
+            settings: Réglages
             apikey: null
             title: null
             maintitle: null
@@ -26,29 +26,29 @@ plugin:
             settingsinfo: null
             syncerror: null
             syncallerror: null
-            syncsuccess: null
-            syncuptodate: null
-            enabled: null
-            disabled: null
-            statuserror: null
+            syncsuccess: 'Synchronisé correctement.'
+            syncuptodate: 'Rien à synchroniser. La liste est à jour.'
+            enabled: 'Liste correctement activée.'
+            disabled: 'Liste désactivée correctement.'
+            statuserror: 'Impossible de changer le statut de la liste.'
             fillapikey: null
-            successfully: null
+            successfully: 'Le courriel de confirmation d''abonnement à la liste ''%list%'' a été envoyé correctement.'
             selectone: null
-            unsubscribe: null
-            errorunsubscribe: null
-            unsuccessfully: null
+            unsubscribe: 'Correctement désabonné de la liste ''%list%''.'
+            errorunsubscribe: 'Impossible de vous désabonner de la liste ''%list%''.'
+            unsuccessfully: 'Impossible de vous abonner à ''%list%''.'
             servicedown: null
         table:
             info: null
-            noentries: null
+            noentries: 'Aucune entrée à afficher'
             filtering: null
             menu: null
             label:
-                search: null
-                filter: null
-                processing: null
-                last: null
-                next: null
-                first: null
-                previous: null
-                norecords: null
+                search: Recherche
+                filter: Filtre
+                processing: 'En cours de traitement...'
+                last: Dernier
+                next: Suivant
+                first: Premier
+                previous: Précédent
+                norecords: 'Aucun enregistrement trouvé.'
