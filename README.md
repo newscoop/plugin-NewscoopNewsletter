@@ -36,7 +36,7 @@ Go to Newscoop Admin panel and then hit `Plugins` tab. Newscoop Newsletter Plugi
 Documentation:
 ----
 
-Documentation can be found [here]().
+Documentation can be found [here](https://github.com/newscoop/plugin-NewscoopNewsletter/blob/master/Resources/doc/index.md).
 
 License
 -------
