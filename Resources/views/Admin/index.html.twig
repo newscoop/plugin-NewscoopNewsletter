@@ -55,8 +55,8 @@
                 <tr>
                     <td class="list-name {{ list.listId }}">{{ list.name }}</td>
                     <td class="list-subscribers {{ list.listId }}">{{ list.subscribersCount }}</td>
-                    <td>{{ list.created_at|date("Y/m/d H:i:s") }}</td>
-                    <td class="list-lastsync {{ list.listId }}">{{ list.lastSynchronized|date("Y/m/d H:i:s") }}</td>
+                    <td>{{ list.created_at|date("Y-m-d H:i:s") }}</td>
+                    <td class="list-lastsync {{ list.listId }}">{{ list.lastSynchronized|date("Y-m-d H:i:s") }}</td>
                     <td>{% if list.isEnabled %}
                         <button type="button" id="{{ list.listId }}" class="btn btn-danger btn-xs change-status {{ list.listId }} disabled-btn">{{ 'plugin.newsletter.label.disable'|trans }}</button>
                         {% else %}
@@ -134,17 +134,23 @@ $('.datatable').each(function(){
 $(document).ready(function() {
     $('.sync-btn').live('click', function() {
         var listId = $(this).attr('id');
+        var that = $(this);
         var url = "{{ path('newscoop_newsletterplugin_admin_synchronizelist', {'id': 'text'}) }}";
         url = url.replace("text", listId);
         $.post(url,
             function(msg) {
                 if (msg.status) {
-                    $('.list-subscribers.'+listId).html();
-                    $('.list-name.'+listId).html();
-                    $('.list-lastsync.'+listId).html();
-                    $('.list-subscribers.'+listId).text(msg.subscribers);
-                    $('.list-lastsync.'+listId).text(msg.lastSync.date);
-                    $('.list-name.'+listId).text(msg.listName);
+                    if (msg.isRemoved) {
+                        that.parents("tr").remove();
+                    } else {
+                        $('.list-subscribers.'+listId).html();
+                        $('.list-name.'+listId).html();
+                        $('.list-lastsync.'+listId).html();
+                        $('.list-subscribers.'+listId).text(msg.subscribers);
+                        $('.list-lastsync.'+listId).text(msg.lastSync.date.slice(0, -7));
+                        $('.list-name.'+listId).text(msg.listName);
+                    }
+
                     flashMessage('{{ 'plugin.newsletter.msg.syncsuccess'|trans }}');
                 } else {
                     flashMessage('{{ 'plugin.newsletter.msg.syncerror'|trans }}', 'error');

@@ -25,12 +25,12 @@ plugin:
             error: 'Nebylo možno uložit váš API klíč.'
             settingsinfo: 'Přidat MailChimp účet API klíče ke správnému fungování!'
             syncerror: 'Nebylo možno synchronizovat vybraný seznam.'
-            syncallerror: 'Nebylo možné synchronizovat seznamy, zkuste znovu později.'
+            syncallerror: null
             syncsuccess: 'Úspěšně synchronizováno.'
             syncuptodate: 'Nic k synchronizaci. Seznam je aktuální.'
             enabled: 'Seznam úspěšně povolen.'
             disabled: 'Seznam úspěšně zakázán.'
-            statuserror: 'Nelze změnit status seznamu.'
+            statuserror: null
             fillapikey: 'Váš MailChimp API Klíč není definován. Prosíme přidejte ho v záložce Nastavení!'
             successfully: 'Potvrzovací e-mail ohledně přihlášení k  ''%seznam%'' seznamu byl úspěšně odeslán.'
             selectone: 'Prosím vyberte alespoň jeden seznam k přihlášení.'

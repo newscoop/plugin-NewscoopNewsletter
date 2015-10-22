@@ -1,54 +1,54 @@
-Plugins: null
+Plugins: Bővítmények
 plugin:
     newsletter:
         label:
-            lists: null
-            search: null
-            settings: null
-            apikey: null
-            title: null
-            maintitle: null
-            config: null
-            sync: null
-            enable: null
-            disable: null
-            name: null
-            subscribers: null
-            created: null
-            options: null
-            lastsync: null
-            syncall: null
+            lists: Listák
+            search: Keresés
+            settings: Beállítások
+            apikey: 'MailChimp API-kulcs'
+            title: Hírlevél
+            maintitle: 'Hírlevél bővítmény'
+            config: konfiguráció
+            sync: Szinkronizálás
+            enable: Engedélyezés
+            disable: Letiltás
+            name: Név
+            subscribers: Feliratkozók
+            created: Létrehozva
+            options: Beállítások
+            lastsync: 'Utolsó szinkronizálás'
+            syncall: 'Minden lista szinkronizálása'
         msg:
-            saved: null
-            notsaved: null
-            selectgroup: null
-            error: null
-            settingsinfo: null
-            syncerror: null
-            syncallerror: null
-            syncsuccess: null
-            syncuptodate: null
-            enabled: null
-            disabled: null
-            statuserror: null
-            fillapikey: null
-            successfully: null
-            selectone: null
-            unsubscribe: null
-            errorunsubscribe: null
-            unsuccessfully: null
-            servicedown: null
+            saved: 'A mentés sikerült.'
+            notsaved: 'Ez a művelet nem hajtható végre ebben a pillanatban.'
+            selectgroup: 'Legalább egy csoportot válassz ki!'
+            error: 'Nem lehet menteni az API-kulcsodat.'
+            settingsinfo: 'Add hozzá a MailChimp fiókod API-kulcsát, hogy használhasd!'
+            syncerror: 'Nem lehet szinkronizálni a kiválasztott listát.'
+            syncallerror: 'Nem lehet szinkronizálni a listákat, próbálkozz később.'
+            syncsuccess: 'A szinkronizálás sikerült.'
+            syncuptodate: 'Nincs szinkronizálandó adat. A lista naprakész.'
+            enabled: 'A lista engedélyezése sikerült.'
+            disabled: 'A lista letiltása sikerült.'
+            statuserror: 'Nem lehet módosítani a lista állapotát.'
+            fillapikey: 'A MailChimp API-kulcsod nincs megadva. A Beállítások fülön add hozzá!'
+            successfully: 'A/z ''%list%'' listára feliratkozás megerősítő e-mailjének elküldése sikerült.'
+            selectone: 'Legalább egy listát válassz ki a feliratkozáshoz.'
+            unsubscribe: 'Leiratkozásod a/z ''%list%'' listáról sikerült.'
+            errorunsubscribe: 'Nem sikerült leiratkozni a/z ''%list%'' listáról.'
+            unsuccessfully: 'Nem sikerült feliratkozni a/z ''%list%'' listára.'
+            servicedown: 'Sajnos pillanatnyilag nem érhető el a hírlevél szolgáltatás.'
         table:
-            info: null
-            noentries: null
-            filtering: null
-            menu: null
+            info: '_START_ - _END_. bejegyzés / _TOTAL_ megjelenítése'
+            noentries: 'Nincs megjelenítendő bejegyzés'
+            filtering: '- szűrés a _MAX_ rekordokból'
+            menu: '_MENU_ rekordok kijelzése'
             label:
-                search: null
-                filter: null
-                processing: null
-                last: null
-                next: null
-                first: null
-                previous: null
-                norecords: null
+                search: Keresés
+                filter: Szűrő
+                processing: Feldolgozás...
+                last: Utolsó
+                next: Következő
+                first: Első
+                previous: Előző
+                norecords: 'Nem találhatók rekordok.'

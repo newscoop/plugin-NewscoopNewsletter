@@ -63,24 +63,24 @@ class NewsletterListsService
             $this->initMailchimp()->lists->subscribe($value,
                 array(
                     'email' => $request->request->get('newsletter-lists-public-email')
-                ),
+                    ),
                 array(
                     'FNAME' => $request->request->get('newsletter-lists-public-firstname'),
                     'LNAME' => $request->request->get('newsletter-lists-public-lastname')
-                ),
+                    ),
                 $type
-            );
+                );
         } catch (\Mailchimp_List_AlreadySubscribed $e) {
             return array(
                 'message' => substr($e->getMessage(), 0, -35),
                 'status' => false,
-            );
+                );
         }
 
         return array(
             'message' => $this->translator->trans('plugin.newsletter.msg.successfully'),
             'status' => true,
-        );
+            );
     }
 
     /**
@@ -99,14 +99,14 @@ class NewsletterListsService
             $mergeVars = array(
                 'FNAME' => $this->user->getCurrentUser()->getFirstName(),
                 'LNAME' => $this->user->getCurrentUser()->getLastName(),
-            );
+                );
 
             if (!empty($groups)) {
                 $groupings = array();
                 $groupings[] = array(
                     'id' => $groups['id'],
                     'groups' => !empty($groups[0]) ? $groups[0] : array(''),
-                );
+                    );
 
                 $mergeVars['GROUPINGS'] = array($groupings[0]);
             }
@@ -114,10 +114,10 @@ class NewsletterListsService
             $this->initMailchimp()->lists->subscribe($id,
                 array(
                     'email' => $this->user->getCurrentUser()->getEmail()
-                ),
+                    ),
                 $mergeVars,
                 $type, false, true, true, true
-            );
+                );
         } catch (\Mailchimp_List_AlreadySubscribed $e) {
             $messageArray = explode('.', $e->getMessage());
             unset($messageArray[count($messageArray)-2]);
@@ -279,8 +279,128 @@ class NewsletterListsService
      *
      * @return NewsletterList
      */
-    protected function getRepository()
+    public function getRepository()
     {
         return $this->em->getRepository('Newscoop\NewsletterPluginBundle\Entity\NewsletterList');
+    }
+
+    /**
+     * Synchronizes all lists.
+     */
+    public function synchronizeAllLists()
+    {
+        $lists = $this->getMailchimpLists();
+        $existingLists = $this->getRepository()
+            ->createQueryBuilder('a')
+            ->where('a.is_active = true')
+            ->getQuery()
+            ->getResult();
+
+        $listsData = $lists['data'];
+        foreach ($listsData as $data) {
+            if (count($existingLists) === 0 || $lists['total'] >= count($existingLists)) {
+                $this->addList($data);
+            }
+
+            if ($lists['total'] < count($existingLists)) {
+                foreach ($existingLists as $list) {
+                    $this->removeList($list, $listsData);
+                }
+            }
+        }
+
+        $this->updateLists($listsData, $existingLists);
+        $this->em->flush();
+    }
+
+    private function addList(array $data = array())
+    {
+        $oldList = $this->getRepository()->findOneBy(array(
+            'listId' => $data['id']
+        ));
+
+        if ($oldList) {
+            $this->updateList($oldList, $data);
+        } else {
+            $this->createList($data);
+        }
+    }
+
+    private function createList(array $data = array())
+    {
+        $list = $this->createNew();
+        $list->setListId($data['id']);
+        $list->setName($data['name']);
+        $list->setSubscribersCount($data['stats']['member_count']);
+        $list->setLastSynchronized(new \DateTime('now'));
+        $list->setCreatedAt(new \DateTime($data['date_created']));
+        $this->em->persist($list);
+    }
+
+    /**
+     * Create new instance of NewsletterList class.
+     *
+     * @return NewsletterList Newsletter list object
+     */
+    public function createNew()
+    {
+        return new NewsletterList();
+    }
+
+    /**
+     * Removes the newsletter list.
+     *
+     * @param  NewsletterList $list Newsletter list to remove
+     * @param  array          $data List data
+     */
+    public function removeList(NewsletterList $list, array $data = array())
+    {
+        if (!$this->searchArray($list->getListId(), 'id', $data)) {
+            $this->em->remove($list);
+        }
+    }
+
+    private function searchArray($value, $key, $array)
+    {
+        foreach ($array as $val) {
+            if ($val[$key] == $value) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function updateLists(array $lists = array(), array $existingLists = array())
+    {
+        foreach ($lists as $data) {
+            foreach ($existingLists as $list) {
+                $this->updateList($list, $data);
+            }
+        }
+    }
+
+    /**
+     * Updates single newsletter list based on MailChimp list.
+     *
+     * @param  NewsletterList $list Newsletter list object
+     * @param  array          $data An array with MailChimp list data
+     *
+     * @return NewsletterList
+     */
+    public function updateList(NewsletterList $list, array $data = array())
+    {
+        if ($list->getListId() == $data['id']) {
+            if ($list->getName() !== $data['name'] ||
+                $list->getSubscribersCount() !== $data['stats']['member_count']) {
+
+                $list->setListId($data['id']);
+                $list->setName($data['name']);
+                $list->setSubscribersCount($data['stats']['member_count']);
+                $list->setLastSynchronized(new \DateTime('now'));
+            }
+        }
+
+        return $list;
     }
 }

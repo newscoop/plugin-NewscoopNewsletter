@@ -2,7 +2,7 @@
     "name": "newscoop/newsletter-plugin-bundle",
     "description": "Newscoop Newsletter Plugin bundle",
     "keywords": ["newscoop", "newsletter", "mailchimp", "email", "plugin"],
-    "version": "0.2",
+    "version": "0.3",
     "type": "newscoop-plugin",
     "license": "GPL-3.0",
     "authors": [

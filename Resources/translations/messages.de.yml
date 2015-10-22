@@ -25,12 +25,12 @@ plugin:
             error: 'API Schlüssel konnte nicht gespeichert werden.'
             settingsinfo: 'Geben Sie den API Schlüssel Ihres MailChimp-Kontos ein.'
             syncerror: 'Die ausgewählte Liste konnte nicht synchronisiert werden.'
-            syncallerror: 'Die Liste konnte nicht synchronisiert werden. Versuchen Sie es später noch einmal.'
+            syncallerror: null
             syncsuccess: 'Erfolgreich synchronisiert.'
             syncuptodate: 'Eine Synchronisation ist nicht nötig. Die Liste ist bereits aktualisiert.'
             enabled: 'Die Liste ist jetzt aktiviert. '
             disabled: 'Die Liste ist jetzt deaktiviert.'
-            statuserror: 'Der Status der Liste konnte nicht geändert werden. '
+            statuserror: null
             fillapikey: 'Ihr MailChimp API Schlüssel ist nicht definiert. Bitte fügen Sie ihn unter Einstellungen hinzu. '
             successfully: 'Die Bestätigungsmail zur Bestellung der ''%list%'' wurde erfolgreich versendet.'
             selectone: 'Wählen Sie bitte mindestens eine Liste zum bestellen aus.'

@@ -1,0 +1,54 @@
+Plugins: Pluginovi
+plugin:
+    newsletter:
+        label:
+            lists: null
+            search: Traži
+            settings: Podešavanja
+            apikey: null
+            title: null
+            maintitle: null
+            config: null
+            sync: null
+            enable: null
+            disable: null
+            name: Naslov
+            subscribers: Pretplatnici
+            created: Napravljeno
+            options: Opcije
+            lastsync: null
+            syncall: null
+        msg:
+            saved: 'Uspešno snimljeno.'
+            notsaved: null
+            selectgroup: null
+            error: null
+            settingsinfo: null
+            syncerror: null
+            syncallerror: null
+            syncsuccess: null
+            syncuptodate: null
+            enabled: null
+            disabled: null
+            statuserror: null
+            fillapikey: null
+            successfully: null
+            selectone: null
+            unsubscribe: null
+            errorunsubscribe: null
+            unsuccessfully: null
+            servicedown: null
+        table:
+            info: 'Prikazano _START_ do _END_ od _TOTAL_ unosa'
+            noentries: 'Nema unosa za prikaz'
+            filtering: '- filtriranje među _MAX_ zapisa'
+            menu: 'Prikaži _MENU_ zapise'
+            label:
+                search: Traži
+                filter: Filter
+                processing: Obrađujem...
+                last: Poslednji
+                next: Sledeći
+                first: Prvi
+                previous: Prethodni
+                norecords: 'Nema zapisa'
