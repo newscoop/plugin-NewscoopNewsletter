@@ -60,27 +60,27 @@ class NewsletterListsService
     public function subscribePublic($id, $type)
     {
         try {
-            $this->initMailchimp()->lists->subscribe($value,
+            $this->initMailchimp()->lists->subscribe($id,
                 array(
                     'email' => $request->request->get('newsletter-lists-public-email')
-                    ),
+                ),
                 array(
                     'FNAME' => $request->request->get('newsletter-lists-public-firstname'),
                     'LNAME' => $request->request->get('newsletter-lists-public-lastname')
-                    ),
+                ),
                 $type
-                );
+            );
         } catch (\Mailchimp_List_AlreadySubscribed $e) {
             return array(
                 'message' => substr($e->getMessage(), 0, -35),
                 'status' => false,
-                );
+            );
         }
 
         return array(
             'message' => $this->translator->trans('plugin.newsletter.msg.successfully'),
             'status' => true,
-            );
+        );
     }
 
     /**
@@ -99,14 +99,14 @@ class NewsletterListsService
             $mergeVars = array(
                 'FNAME' => $this->user->getCurrentUser()->getFirstName(),
                 'LNAME' => $this->user->getCurrentUser()->getLastName(),
-                );
+            );
 
             if (!empty($groups)) {
                 $groupings = array();
                 $groupings[] = array(
                     'id' => $groups['id'],
                     'groups' => !empty($groups[0]) ? $groups[0] : array(''),
-                    );
+                );
 
                 $mergeVars['GROUPINGS'] = array($groupings[0]);
             }
@@ -114,10 +114,10 @@ class NewsletterListsService
             $this->initMailchimp()->lists->subscribe($id,
                 array(
                     'email' => $this->user->getCurrentUser()->getEmail()
-                    ),
+                ),
                 $mergeVars,
                 $type, false, true, true, true
-                );
+            );
         } catch (\Mailchimp_List_AlreadySubscribed $e) {
             $messageArray = explode('.', $e->getMessage());
             unset($messageArray[count($messageArray)-2]);
