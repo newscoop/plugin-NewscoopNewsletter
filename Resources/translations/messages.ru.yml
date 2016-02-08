@@ -1,25 +1,25 @@
-Plugins: null
+Plugins: Плагины
 plugin:
     newsletter:
         label:
             lists: null
-            search: null
-            settings: null
+            search: Поиск
+            settings: Настройки
             apikey: null
             title: null
             maintitle: null
             config: null
             sync: null
-            enable: null
-            disable: null
-            name: null
-            subscribers: null
-            created: null
-            options: null
+            enable: Активировать
+            disable: Деактивировать
+            name: Заголовок
+            subscribers: Подписчики
+            created: Создана
+            options: Варианты
             lastsync: null
             syncall: null
         msg:
-            saved: null
+            saved: 'Сохранение завершено.'
             notsaved: null
             selectgroup: null
             error: null
@@ -39,16 +39,16 @@ plugin:
             unsuccessfully: null
             servicedown: null
         table:
-            info: null
-            noentries: null
-            filtering: null
-            menu: null
+            info: 'Показано _START_ до _END_ / _TOTAL_ записей'
+            noentries: 'Нет записей для просмотра'
+            filtering: 'фильтрация от _MAX_ записей'
+            menu: 'Отобразить _MENU_ записи'
             label:
-                search: null
-                filter: null
-                processing: null
-                last: null
-                next: null
-                first: null
-                previous: null
-                norecords: null
+                search: Поиск
+                filter: Фильтр
+                processing: Обработка...
+                last: Последний
+                next: Следующ.
+                first: Первый
+                previous: Предыдущ.
+                norecords: 'Не выбрана ни одна из записей'
