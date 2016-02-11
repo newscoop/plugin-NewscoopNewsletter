@@ -2,53 +2,53 @@ Plugins: null
 plugin:
     newsletter:
         label:
-            lists: null
-            search: null
-            settings: null
-            apikey: null
+            lists: Листе
+            search: Тражи
+            settings: Подешавања
+            apikey: 'MailChimp API ključ'
             title: null
             maintitle: null
-            config: null
-            sync: null
-            enable: null
-            disable: null
-            name: null
-            subscribers: null
-            created: null
-            options: null
-            lastsync: null
-            syncall: null
+            config: Подешавања
+            sync: Синхронизуј
+            enable: Активирати
+            disable: Деактивирати
+            name: Наслов
+            subscribers: Претплатници
+            created: Направљено
+            options: Опције
+            lastsync: 'Последња синхронизација'
+            syncall: 'Синхронизуј све листе'
         msg:
-            saved: null
-            notsaved: null
-            selectgroup: null
-            error: null
-            settingsinfo: null
-            syncerror: null
-            syncallerror: null
-            syncsuccess: null
-            syncuptodate: null
-            enabled: null
-            disabled: null
-            statuserror: null
-            fillapikey: null
-            successfully: null
-            selectone: null
-            unsubscribe: null
-            errorunsubscribe: null
-            unsuccessfully: null
-            servicedown: null
+            saved: 'Успешно сачувано.'
+            notsaved: 'У овом тренутку није могуће процесуирати ову операцију.'
+            selectgroup: 'Изаберите бар једну групу!'
+            error: 'Ваш АПИ кључ није могуће сачувати.'
+            settingsinfo: 'Да би активирали конфигурацију, додајте ваш АПИ кључ.'
+            syncerror: 'Изабране листе нису синхронизоване.'
+            syncallerror: 'Изабране листе нису синхронизоване. Покушајте поново касније.'
+            syncsuccess: 'Успешно синхронизовано.'
+            syncuptodate: 'Листа је освежена, ништа ѕа синхронизацију.'
+            enabled: 'Листа је успешно активирана.'
+            disabled: 'Листа је успешно деактивирана.'
+            statuserror: 'Статус листе није промењен.'
+            fillapikey: 'АПИ кључ није дефинисан. Дефинишите га у опцији "Подешавања".'
+            successfully: 'Потврдна порука у вези са претплатом на листу ''%list%'' је успешно послата.'
+            selectone: 'Изаберите бар једну листу на коју желите да се претплатите.'
+            unsubscribe: 'Успешно сте се одјавили са ''%list%'' листе.'
+            errorunsubscribe: 'Нисте успели да се одјавите са ''%list%'' листе.'
+            unsuccessfully: 'Нисте успели да се пријавите на ''%list%'' листу.'
+            servicedown: 'Извињавамо се, сервис тренутно није доступан.'
         table:
-            info: null
-            noentries: null
-            filtering: null
-            menu: null
+            info: 'Приказано _START_ до _END_ од _TOTAL_ уноса'
+            noentries: 'Нема уноса за приказ'
+            filtering: '- филтрирање међу _MAX_ записа'
+            menu: 'Прикажи _MENU_ записе'
             label:
-                search: null
-                filter: null
-                processing: null
-                last: null
-                next: null
-                first: null
-                previous: null
-                norecords: null
+                search: Тражи
+                filter: Филтер
+                processing: Обрађујем...
+                last: Последњи
+                next: Следећи
+                first: Први
+                previous: Претходни
+                norecords: 'Нема записа'
