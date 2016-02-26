@@ -1,17 +1,15 @@
 <?php
 /**
- * @package Newscoop\NewsletterPluginBundle
  * @author Rafał Muszyński <rafal.muszynski@sourcefabric.org>
  * @copyright 2013 Sourcefabric o.p.s.
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
-
 namespace Newscoop\NewsletterPluginBundle\Entity;
 
-use Doctrine\ORM\Mapping AS ORM;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Newsletter list entity
+ * Newsletter list entity.
  *
  * @ORM\Entity()
  * @ORM\Table(name="plugin_newsletter_groups")
@@ -22,63 +20,72 @@ class NewsletterGroup
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
+     *
      * @var int
      */
-    private $id;
+    protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Newscoop\NewsletterPluginBundle\Entity\NewsletterList", inversedBy="groups")
-     * @ORM\JoinColumn(name="list_id", referencedColumnName="id")
-     * @var Newscoop\NewsletterPluginBundle\Entity\NewsletterList
+     * @ORM\ManyToOne(targetEntity="NewsletterList", inversedBy="groups")
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @var NewsletterList
      */
-    private $list;
+    protected $list;
 
     /**
      * @ORM\Column(type="string", name="group_name")
+     *
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="string", name="group_id")
+     *
      * @var string
      */
-    private $groupId;
+    protected $groupId;
 
     /**
      * @ORM\Column(type="integer", name="subscribers_count")
+     *
      * @var int
      */
-    private $subscribersCount;
+    protected $subscribersCount;
 
     /**
      * @ORM\Column(type="boolean", name="enabled")
-     * @var boolean
+     *
+     * @var bool
      */
-    private $isEnabled;
+    protected $isEnabled;
 
     /**
      * @ORM\Column(type="datetime", name="created_at")
+     *
      * @var datetime
      */
-    private $created_at;
+    protected $created_at;
 
     /**
      * @ORM\Column(type="boolean", name="is_active")
-     * @var boolean
+     *
+     * @var bool
      */
-    private $is_active;
+    protected $is_active;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->setIsEnabled(true);
         $this->setIsActive(true);
         $this->setCreatedAt(new \DateTime());
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -86,7 +93,7 @@ class NewsletterGroup
     }
 
     /**
-     * Get list id
+     * Get list id.
      *
      * @return string
      */
@@ -96,20 +103,21 @@ class NewsletterGroup
     }
 
     /**
-     * Set list id
+     * Set list id.
      *
-     * @param  string $listId
+     * @param string $listId
+     *
      * @return string
      */
     public function setList($list)
     {
         $this->list = $list;
-        
+
         return $this;
     }
 
     /**
-     * Set group id
+     * Set group id.
      *
      * @param string $groupId
      *
@@ -123,7 +131,7 @@ class NewsletterGroup
     }
 
     /**
-     * Get group id
+     * Get group id.
      *
      * @return string
      */
@@ -133,7 +141,7 @@ class NewsletterGroup
     }
 
     /**
-     * Get list name
+     * Get list name.
      *
      * @return string
      */
@@ -143,20 +151,21 @@ class NewsletterGroup
     }
 
     /**
-     * Set list name
+     * Set list name.
      *
-     * @param  string $name
+     * @param string $name
+     *
      * @return string
      */
     public function setName($name)
     {
         $this->name = $name;
-        
+
         return $this;
     }
 
     /**
-     * Get subscribers count
+     * Get subscribers count.
      *
      * @return int
      */
@@ -166,22 +175,23 @@ class NewsletterGroup
     }
 
     /**
-     * Set subscribers count
+     * Set subscribers count.
      *
-     * @param  int $subscribersCount
+     * @param int $subscribersCount
+     *
      * @return int
      */
     public function setSubscribersCount($subscribersCount)
     {
         $this->subscribersCount = $subscribersCount;
-        
+
         return $this;
     }
 
     /**
-     * Get list enable/disable
+     * Get list enable/disable.
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsEnabled()
     {
@@ -189,22 +199,23 @@ class NewsletterGroup
     }
 
     /**
-     * Set list enable/disable
+     * Set list enable/disable.
      *
-     * @param  boolean $isEnabled
-     * @return boolean
+     * @param bool $isEnabled
+     *
+     * @return bool
      */
     public function setIsEnabled($isEnabled)
     {
         $this->isEnabled = $isEnabled;
-        
+
         return $this;
     }
 
     /**
-     * Get status
+     * Get status.
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsActive()
     {
@@ -212,20 +223,21 @@ class NewsletterGroup
     }
 
     /**
-     * Set status
+     * Set status.
      *
-     * @param  boolean $is_active
-     * @return boolean
+     * @param bool $is_active
+     *
+     * @return bool
      */
     public function setIsActive($is_active)
     {
         $this->is_active = $is_active;
-        
+
         return $this;
     }
 
     /**
-     * Get create date
+     * Get create date.
      *
      * @return datetime
      */
@@ -235,15 +247,16 @@ class NewsletterGroup
     }
 
     /**
-     * Set create date
+     * Set create date.
      *
-     * @param  datetime $created_at
+     * @param datetime $created_at
+     *
      * @return datetime
      */
     public function setCreatedAt(\DateTime $created_at)
     {
         $this->created_at = $created_at;
-        
+
         return $this;
     }
 }

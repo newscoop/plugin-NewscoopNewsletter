@@ -1,27 +1,20 @@
 <?php
 /**
- * @package Newscoop\NewsletterPluginBundle
  * @author Rafał Muszyński <rafal.muszynski@sourcefabric.org>
  * @copyright 2013 Sourcefabric o.p.s.
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
-
 namespace Newscoop\NewsletterPluginBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Newscoop\NewsletterPluginBundle\Form\Type\SettingsType;
-use Newscoop\NewsletterPluginBundle\Entity\NewsletterList;
-use Newscoop\NewsletterPluginBundle\Entity\NewsletterGroup;
 
 class AdminController extends Controller
 {
-
     /**
      * @Route("/admin/newsletter-plugin")
      * @Route("/admin/newsletter-plugin/configure", name="newscoop_newsletterplugin_admin_configure")
@@ -33,14 +26,14 @@ class AdminController extends Controller
         $preferencesService = $this->container->get('system_preferences_service');
         $message = null;
         $form = $this->container->get('form.factory')->create(new SettingsType(), array(
-            'apiKey' => $preferencesService->mailchimp_apikey
+            'apiKey' => $preferencesService->mailchimp_apikey,
         ), array());
 
         if (!$preferencesService->mailchimp_apikey) {
             $message = $translator->trans('plugin.newsletter.msg.fillapikey');
         }
 
-        if ($request->get('_route') === "newscoop_newsletterplugin_admin_configure") {
+        if ($request->get('_route') === 'newscoop_newsletterplugin_admin_configure') {
             if ($request->isMethod('POST')) {
                 $form->handleRequest($request);
                 if ($form->isValid()) {
@@ -66,7 +59,7 @@ class AdminController extends Controller
         return $this->render('NewscoopNewsletterPluginBundle:Admin:index.html.twig', array(
             'form' => $form->createView(),
             'lists' => $newsletterLists,
-            'message' => $message
+            'message' => $message,
         ));
     }
 
@@ -82,7 +75,7 @@ class AdminController extends Controller
             $newsletterService = $this->container->get('newscoop_newsletter_plugin.service');
             $newsletterList = $newsletterService->getRepository()->findOneBy(array(
                 'is_active' => true,
-                'listId' => $id
+                'listId' => $id,
             ));
 
             if (!$newsletterList) {
@@ -108,7 +101,7 @@ class AdminController extends Controller
                 'subscribers' => $newsletterList->getSubscribersCount(),
                 'listName' => $newsletterList->getName(),
                 'lastSync' => $newsletterList->getLastSynchronized(),
-                'isRemoved' => $isRemoved
+                'isRemoved' => $isRemoved,
             ));
         } catch (\Exception $e) {
             return new JsonResponse(array('status' => false));
@@ -145,11 +138,11 @@ class AdminController extends Controller
         $entityManager = $this->container->get('em');
         $newsletterList = $entityManager->getRepository('Newscoop\NewsletterPluginBundle\Entity\NewsletterList')->findOneBy(array(
             'is_active' => true,
-            'listId' => $id
+            'listId' => $id,
         ));
 
         if ($newsletterList) {
-            if ($request->get('_route') === "newscoop_newsletterplugin_admin_disablelist") {
+            if ($request->get('_route') === 'newscoop_newsletterplugin_admin_disablelist') {
                 $newsletterList->setIsEnabled(false);
             } else {
                 $newsletterList->setIsEnabled(true);

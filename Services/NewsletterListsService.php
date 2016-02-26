@@ -1,24 +1,19 @@
 <?php
 /**
- * @package Newscoop\NewsletterPluginBundle
  * @author Rafał Muszyński <rafal.muszynski@sourcefabric.org>
  * @copyright 2014 Sourcefabric o.p.s.
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
-
 namespace Newscoop\NewsletterPluginBundle\Services;
 
-use Doctrine\ORM\EntityManager;
 use Newscoop\NewsletterPluginBundle\TemplateList\ListCriteria;
 use Newscoop\NewsletterPluginBundle\Entity\NewsletterList;
-use Symfony\Component\EventDispatcher\GenericEvent;
+use Newscoop\NewsletterPluginBundle\Entity\NewsletterGroup;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Newscoop\NewsletterPluginBundle\Entity\SubscribedUser;
 use Newscoop\Entity\User;
 
 /**
- * Newsletter service
+ * Newsletter service.
  */
 class NewsletterListsService
 {
@@ -50,23 +45,21 @@ class NewsletterListsService
     }
 
     /**
-     * Subscribe not registered user to given list id
+     * Subscribe not registered user to given list id.
      *
      * @param string $id   Newsletter list id
      * @param string $type Newsletter type Html or text
-     *
-     * @return void
      */
     public function subscribePublic($id, $type)
     {
         try {
             $this->initMailchimp()->lists->subscribe($id,
                 array(
-                    'email' => $request->request->get('newsletter-lists-public-email')
+                    'email' => $request->request->get('newsletter-lists-public-email'),
                 ),
                 array(
                     'FNAME' => $request->request->get('newsletter-lists-public-firstname'),
-                    'LNAME' => $request->request->get('newsletter-lists-public-lastname')
+                    'LNAME' => $request->request->get('newsletter-lists-public-lastname'),
                 ),
                 $type
             );
@@ -84,18 +77,15 @@ class NewsletterListsService
     }
 
     /**
-     * Subscribe user to given list id
+     * Subscribe user to given list id.
      *
      * @param string $id     Newsletter list id
      * @param string $type   Newsletter type Html or text
      * @param array  $groups Groups
-     *
-     * @return void
      */
     public function subscribeUser($id, $type, array $groups = array())
     {
         try {
-
             $mergeVars = array(
                 'FNAME' => $this->user->getCurrentUser()->getFirstName(),
                 'LNAME' => $this->user->getCurrentUser()->getLastName(),
@@ -113,21 +103,21 @@ class NewsletterListsService
 
             $this->initMailchimp()->lists->subscribe($id,
                 array(
-                    'email' => $this->user->getCurrentUser()->getEmail()
+                    'email' => $this->user->getCurrentUser()->getEmail(),
                 ),
                 $mergeVars,
                 $type, false, true, true, true
             );
         } catch (\Mailchimp_List_AlreadySubscribed $e) {
             $messageArray = explode('.', $e->getMessage());
-            unset($messageArray[count($messageArray)-2]);
+            unset($messageArray[count($messageArray) - 2]);
 
             throw new \Exception(implode('.', $messageArray));
         }
     }
 
     /**
-     * Test if user email is subscribed to list
+     * Test if user email is subscribed to list.
      *
      * @param string $email  User email
      * @param string $listId List id
@@ -154,7 +144,7 @@ class NewsletterListsService
     }
 
     /**
-     * Unsubscribe email from list
+     * Unsubscribe email from list.
      *
      * @param string $email  User email
      * @param string $listId List id
@@ -171,7 +161,7 @@ class NewsletterListsService
     }
 
     /**
-     * Get groups for given list id
+     * Get groups for given list id.
      *
      * @param string $listId
      *
@@ -183,7 +173,7 @@ class NewsletterListsService
     }
 
     /**
-     * Get groups for given user and list
+     * Get groups for given user and list.
      *
      * @param Newscoop\Entity\User $user
      * @param string               $listId
@@ -194,7 +184,7 @@ class NewsletterListsService
     {
         $user = $this->user->getCurrentUser();
         if ($user) {
-            $info = $this->initMailchimp()->lists->memberInfo($listId, array(array('email'=>$user->getEmail())));
+            $info = $this->initMailchimp()->lists->memberInfo($listId, array(array('email' => $user->getEmail())));
             if (!$info['success_count']) {
                 return array();
             }
@@ -217,7 +207,7 @@ class NewsletterListsService
     }
 
     /**
-     * Get lists email is subscribed to
+     * Get lists email is subscribed to.
      *
      * @param string $email User email
      *
@@ -231,9 +221,9 @@ class NewsletterListsService
     }
 
     /**
-     * Find by criteria
+     * Find by criteria.
      *
-     * @param ListCriteria         $criteria
+     * @param ListCriteria $criteria
      *
      * @return Newscoop\ListResult
      */
@@ -243,7 +233,7 @@ class NewsletterListsService
     }
 
     /**
-     * Initialize MailChimp library
+     * Initialize MailChimp library.
      *
      * @return Mailchimp
      */
@@ -253,9 +243,10 @@ class NewsletterListsService
     }
 
     /**
-     * Get mailchimp lists
+     * Get mailchimp lists.
      *
      * @param array $listId
+     *
      * @return array
      */
     public function getMailchimpLists($listId = array())
@@ -264,9 +255,10 @@ class NewsletterListsService
     }
 
     /**
-     * Count by given criteria
+     * Count by given criteria.
      *
      * @param array $criteria
+     *
      * @return int
      */
     public function countBy(array $criteria = array())
@@ -275,7 +267,7 @@ class NewsletterListsService
     }
 
     /**
-     * Get repository
+     * Get repository.
      *
      * @return NewsletterList
      */
@@ -316,7 +308,7 @@ class NewsletterListsService
     private function addList(array $data = array())
     {
         $oldList = $this->getRepository()->findOneBy(array(
-            'listId' => $data['id']
+            'listId' => $data['id'],
         ));
 
         if ($oldList) {
@@ -334,6 +326,17 @@ class NewsletterListsService
         $list->setSubscribersCount($data['stats']['member_count']);
         $list->setLastSynchronized(new \DateTime('now'));
         $list->setCreatedAt(new \DateTime($data['date_created']));
+
+        $listGroups = $this->getListGroups($list->getListId());
+        foreach ($listGroups[0]['groups'] as $group) {
+            $newsletterGroup = $this->createNewGroup();
+            $newsletterGroup->setList($list);
+            $newsletterGroup->setGroupId($listGroups[0]['id']);
+            $newsletterGroup->setName($group['name']);
+            $newsletterGroup->setSubscribersCount(is_null($group['subscribers']) ? 0 : $group['subscribers']);
+            $list->addGroup($newsletterGroup);
+        }
+
         $this->em->persist($list);
     }
 
@@ -350,8 +353,8 @@ class NewsletterListsService
     /**
      * Removes the newsletter list.
      *
-     * @param  NewsletterList $list Newsletter list to remove
-     * @param  array          $data List data
+     * @param NewsletterList $list Newsletter list to remove
+     * @param array          $data List data
      */
     public function removeList(NewsletterList $list, array $data = array())
     {
@@ -383,8 +386,8 @@ class NewsletterListsService
     /**
      * Updates single newsletter list based on MailChimp list.
      *
-     * @param  NewsletterList $list Newsletter list object
-     * @param  array          $data An array with MailChimp list data
+     * @param NewsletterList $list Newsletter list object
+     * @param array          $data An array with MailChimp list data
      *
      * @return NewsletterList
      */
@@ -393,7 +396,6 @@ class NewsletterListsService
         if ($list->getListId() == $data['id']) {
             if ($list->getName() !== $data['name'] ||
                 $list->getSubscribersCount() !== $data['stats']['member_count']) {
-
                 $list->setListId($data['id']);
                 $list->setName($data['name']);
                 $list->setSubscribersCount($data['stats']['member_count']);
@@ -402,5 +404,15 @@ class NewsletterListsService
         }
 
         return $list;
+    }
+
+    /**
+     * Create new instance of NewsletterGroup class.
+     *
+     * @return NewsletterGroup Newsletter group object
+     */
+    public function createNewGroup()
+    {
+        return new NewsletterGroup();
     }
 }
