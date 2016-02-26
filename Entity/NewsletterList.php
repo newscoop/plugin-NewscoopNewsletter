@@ -1,18 +1,16 @@
 <?php
 /**
- * @package Newscoop\NewsletterPluginBundle
  * @author Rafał Muszyński <rafal.muszynski@sourcefabric.org>
  * @copyright 2013 Sourcefabric o.p.s.
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
-
 namespace Newscoop\NewsletterPluginBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Newsletter list entity
+ * Newsletter list entity.
  *
  * @ORM\Entity(repositoryClass="Newscoop\NewsletterPluginBundle\Entity\Repository\NewsletterListRepository")
  * @ORM\Table(name="plugin_newsletter_lists")
@@ -23,68 +21,83 @@ class NewsletterList
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", name="id")
+     *
      * @var int
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", name="list_id")
+     *
      * @var string
      */
-    private $listId;
+    protected $listId;
 
     /**
-     * @ORM\OneToMany(targetEntity="Newscoop\NewsletterPluginBundle\Entity\NewsletterGroup", mappedBy="list")
-     * @var array
+     * @ORM\OneToMany(
+     *     targetEntity="NewsletterGroup",
+     *     mappedBy="list",
+     *     orphanRemoval=true,
+     *     cascade={"persist"}
+     * )
+     *
+     * @var ArrayCollection
      */
-    private $groups;
+    protected $groups;
 
     /**
      * @ORM\Column(type="string", name="list_name")
+     *
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="integer", name="subscribers_count")
+     *
      * @var int
      */
-    private $subscribersCount;
+    protected $subscribersCount;
 
     /**
      * @ORM\Column(type="boolean", name="enabled")
-     * @var boolean
+     *
+     * @var bool
      */
-    private $isEnabled;
+    protected $isEnabled;
 
     /**
      * @ORM\Column(type="datetime", name="created_at")
+     *
      * @var datetime
      */
-    private $created_at;
+    protected $created_at;
 
     /**
      * @ORM\Column(type="datetime", name="last_sync")
+     *
      * @var datetime
      */
-    private $lastSynchronized;
+    protected $lastSynchronized;
 
     /**
      * @ORM\Column(type="boolean", name="is_active")
-     * @var boolean
+     *
+     * @var bool
      */
-    private $is_active;
+    protected $is_active;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->groups = new ArrayCollection();
         $this->setIsEnabled(true);
         $this->setIsActive(true);
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -92,7 +105,7 @@ class NewsletterList
     }
 
     /**
-     * Get list id
+     * Get list id.
      *
      * @return string
      */
@@ -102,9 +115,10 @@ class NewsletterList
     }
 
     /**
-     * Set list id
+     * Set list id.
      *
-     * @param  string $listId
+     * @param string $listId
+     *
      * @return string
      */
     public function setListId($listId)
@@ -115,7 +129,7 @@ class NewsletterList
     }
 
     /**
-     * Get groups
+     * Get groups.
      *
      * @return array
      */
@@ -125,7 +139,7 @@ class NewsletterList
     }
 
     /**
-     * Get list name
+     * Get list name.
      *
      * @return string
      */
@@ -135,20 +149,21 @@ class NewsletterList
     }
 
     /**
-     * Set list name
+     * Set list name.
      *
-     * @param  string $name
+     * @param string $name
+     *
      * @return string
      */
     public function setName($name)
     {
         $this->name = $name;
-        
+
         return $this;
     }
 
     /**
-     * Get subscribers count
+     * Get subscribers count.
      *
      * @return int
      */
@@ -158,22 +173,23 @@ class NewsletterList
     }
 
     /**
-     * Set subscribers count
+     * Set subscribers count.
      *
-     * @param  int $subscribersCount
+     * @param int $subscribersCount
+     *
      * @return int
      */
     public function setSubscribersCount($subscribersCount)
     {
         $this->subscribersCount = $subscribersCount;
-        
+
         return $this;
     }
 
     /**
-     * Get list enable/disable
+     * Get list enable/disable.
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsEnabled()
     {
@@ -181,22 +197,23 @@ class NewsletterList
     }
 
     /**
-     * Set list enable/disable
+     * Set list enable/disable.
      *
-     * @param  boolean $isEnabled
-     * @return boolean
+     * @param bool $isEnabled
+     *
+     * @return bool
      */
     public function setIsEnabled($isEnabled)
     {
         $this->isEnabled = $isEnabled;
-        
+
         return $this;
     }
 
     /**
-     * Get status
+     * Get status.
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsActive()
     {
@@ -204,20 +221,21 @@ class NewsletterList
     }
 
     /**
-     * Set status
+     * Set status.
      *
-     * @param  boolean $is_active
-     * @return boolean
+     * @param bool $is_active
+     *
+     * @return bool
      */
     public function setIsActive($is_active)
     {
         $this->is_active = $is_active;
-        
+
         return $this;
     }
 
     /**
-     * Get create date
+     * Get create date.
      *
      * @return datetime
      */
@@ -227,20 +245,21 @@ class NewsletterList
     }
 
     /**
-     * Set create date
+     * Set create date.
      *
-     * @param  datetime $created_at
+     * @param datetime $created_at
+     *
      * @return datetime
      */
     public function setCreatedAt(\DateTime $created_at)
     {
         $this->created_at = $created_at;
-        
+
         return $this;
     }
 
     /**
-     * Get synchronization date
+     * Get synchronization date.
      *
      * @return datetime
      */
@@ -250,15 +269,28 @@ class NewsletterList
     }
 
     /**
-     * Set synchronization date
+     * Set synchronization date.
      *
-     * @param  datetime $lastSynchronized
+     * @param datetime $lastSynchronized
+     *
      * @return datetime
      */
     public function setLastSynchronized(\DateTime $lastSynchronized)
     {
         $this->lastSynchronized = $lastSynchronized;
-        
+
         return $this;
+    }
+
+    public function addGroup(NewsletterGroup $group)
+    {
+        $this->groups->add($group);
+        $group->setList($this);
+    }
+
+    public function removeGroup(NewsletterGroup $group)
+    {
+        $this->groups->removeElement($group);
+        $group->setList(null);
     }
 }
