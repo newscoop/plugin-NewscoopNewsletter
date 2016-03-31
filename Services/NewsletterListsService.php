@@ -169,7 +169,11 @@ class NewsletterListsService
      */
     public function getListGroups($listId)
     {
-        return $this->initMailchimp()->lists->interestGroupings($listId);
+        try {
+            return $this->initMailchimp()->lists->interestGroupings($listId);
+        } catch (\Exception $e) {
+            return array(array('groups' => array()));
+       }
     }
 
     /**
