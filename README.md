@@ -13,15 +13,15 @@ Features:
   - possibility to disable/enable lists
   - partial MailChimp groups support (see documentation)
 
-Installing Newscoop Newsletter Plugin Guide
+Installation
 -------------
 Installation is a quick process:
 
 
-1. Installing plugin through our Newscoop Plugin System
+1. How to install this plugin?
 2. That's all!
 
-### Step 1: Installing plugin through our Newscoop Plugin System
+### Step 1: How to install this plugin?
 Run the command:
 ``` bash
 $ php application/console plugins:install "newscoop/newsletter-plugin-bundle"
@@ -29,21 +29,36 @@ $ php application/console assets:install public/
 ```
 Plugin will be installed to your project's `newscoop/plugins/Newscoop` directory.
 
-
 ### Step 2: That's all!
-Go to Newscoop Admin panel and then hit `Plugins` tab. Newscoop Newsletter Plugin will show up there.
+Go to Newscoop Admin panel and then open `Plugins` tab. The Plugin will show up there. You can now use the plugin.
+
+
+**Note:**
+
+To update this plugin run the command:
+``` bash
+$ php application/console plugins:update "newscoop/newsletter-plugin-bundle"
+$ php application/console assets:install public/
+```
+
+To remove this plugin run the command:
+``` bash
+$ php application/console plugins:remove "newscoop/newsletter-plugin-bundle"
+```
 
 Documentation:
-----
+-------------
 
-Documentation can be found [here](https://github.com/newscoop/plugin-NewscoopNewsletter/blob/master/Resources/doc/index.md).
+The extended documentation can be found [here](https://wiki.sourcefabric.org/display/NPS/Newsletter).
+
+Technical documentation can be found [here](https://github.com/newscoop/plugin-NewscoopNewsletter/blob/master/Resources/doc/index.md).
 
 License
 -------
 
 This bundle is under the GNU General Public License v3. See the complete license in the bundle:
 
-    LICENSE.txt
+    LICENSE
 
 About
 -------
