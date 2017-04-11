@@ -116,6 +116,21 @@ class DefaultController extends Controller
                             'status' => false,
                         );
                     }
+                    
+                    if (empty($groups)) {
+                        try {
+                            $newsletterService->unsubscribe($user->getEmail(), $listIdGroups);
+                            $messages[] = array(
+                                'message' => $translator->trans('plugin.newsletter.msg.unsubscribe', array('%list%' => $listIdGroups)),
+                                'status' => true,
+                            );
+                        } catch(\Exception $e) {
+                            $messages[] = array(
+                                'message' => $translator->trans('plugin.newsletter.msg.errorunsubscribe', array('%list%' => $listIdGroups)),
+                                'status' => false,
+                            );
+                        }
+                    }
                 }
 
                 return new JsonResponse(array('response' => $messages));
