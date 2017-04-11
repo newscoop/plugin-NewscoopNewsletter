@@ -188,6 +188,10 @@ class NewsletterListsService
     {
         $user = $this->user->getCurrentUser();
         if ($user) {
+            if (!$this->isSubscribed($user->getEmail(), $listId)) {
+                return array();
+            }
+
             $info = $this->initMailchimp()->lists->memberInfo($listId, array(array('email' => $user->getEmail())));
             if (!$info['success_count']) {
                 return array();
